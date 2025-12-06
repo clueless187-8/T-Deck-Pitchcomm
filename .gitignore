@@ -1,0 +1,34 @@
+# Compiled files
+*.o
+*.elf
+*.bin
+*.hex
+
+# Arduino build artifacts
+build/
+.arduino15/
+*.d
+
+# IDE files
+.vscode/
+*.code-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Backup files
+*.bak
+*~
+
+# Python artifacts
+__pycache__/
+*.pyc
+*.pyo
+
+# Logs
+*.log
+
+# Test output
+test_results/
