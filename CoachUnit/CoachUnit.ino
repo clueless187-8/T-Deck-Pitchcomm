@@ -1,16 +1,13 @@
 /*
  * ============================================================================
- * T-DECK PITCHCOMM - COACH UNIT TRANSMITTER
+ * T-DECK PITCHCOMM - COACH TRANSMITTER UNIT
  * ============================================================================
  * 
- * Production Firmware v1.0
+ * HARDWARE: LilyGO T-Deck Plus (ESP32-S3 + SX1262)
+ * VERIFIED: Pin definitions from LILYGO Wiki (wiki.lilygo.cc)
  * 
- * Real-time pitch signal transmission for baseball operations.
- * 
- * Hardware: LilyGO T-Deck Plus (ESP32-S3)
- * Radio:    Semtech SX1262 LoRa @ 915 MHz
- * Display:  ST7789 320x240 IPS
- * Input:    Integrated QWERTY keyboard
+ * PIN VERIFICATION SOURCE:
+ * https://wiki.lilygo.cc/get_started/en/Wearable/T-Deck-Plus/T-Deck-Plus.html
  * 
  * MIT License
  * Copyright (c) 2025 clueless187-8
@@ -24,257 +21,135 @@
 #include <Wire.h>
 #include <RadioLib.h>
 #include <TFT_eSPI.h>
-#include <esp_task_wdt.h>
+#include "esp_task_wdt.h"
 #include "config.h"
 
 // ============================================================================
-// GLOBAL OBJECTS
+// HARDWARE OBJECTS
 // ============================================================================
-
 TFT_eSPI tft = TFT_eSPI();
-SX1262 radio = new Module(LORA_CS, LORA_DIO1, LORA_RST, LORA_BUSY, SPI);
 
-// System state tracking
-struct SystemState {
-    bool displayOK      = false;
-    bool radioOK        = false;
-    bool keyboardOK     = false;
-    bool systemReady    = false;
-    uint32_t bootTime   = 0;
-    uint32_t lastTX     = 0;
-    uint32_t txCount    = 0;
-    uint32_t txErrors   = 0;
-    int lastRSSI        = 0;
-    String lastPitch    = "";
-} sys;
+// SX1262 Radio - Uses shared SPI bus
+// Constructor: SX1262(cs, irq, rst, busy)
+SX1262 radio = new Module(LORA_CS, LORA_DIO1, LORA_RST, LORA_BUSY);
 
-// Pitch type definitions
-struct PitchType {
-    char key;
-    const char* name;
-    const char* shortName;
+// ============================================================================
+// PITCH DEFINITIONS
+// ============================================================================
+typedef struct {
     uint8_t code;
-    uint32_t color;
-};
+    const char* name;
+    const char* abbrev;
+    uint16_t color;
+} PitchType;
 
+// Standard pitch call mapping (keyboard keys 1-9, 0, P)
 const PitchType PITCHES[] = {
-    {'1', "FASTBALL",     "FB",  0x01, TFT_RED},
-    {'2', "CURVEBALL",    "CB",  0x02, TFT_BLUE},
-    {'3', "SLIDER",       "SL",  0x03, TFT_GREEN},
-    {'4', "CHANGEUP",     "CH",  0x04, TFT_YELLOW},
-    {'5', "CUTTER",       "CT",  0x05, TFT_CYAN},
-    {'6', "SINKER",       "SI",  0x06, TFT_MAGENTA},
-    {'7', "SPLITTER",     "SP",  0x07, TFT_ORANGE},
-    {'8', "KNUCKLEBALL",  "KB",  0x08, TFT_PURPLE},
-    {'9', "SCREWBALL",    "SC",  0x09, TFT_GREENYELLOW},
-    {'0', "PITCHOUT",     "PO",  0x0A, TFT_WHITE},
-    {'p', "PICKOFF",      "PK",  0x0B, TFT_PINK},
-    {'P', "PICKOFF",      "PK",  0x0B, TFT_PINK}
+    {0x01, "Fastball",     "FB", TFT_RED},
+    {0x02, "Curveball",    "CB", TFT_BLUE},
+    {0x03, "Slider",       "SL", TFT_GREEN},
+    {0x04, "Changeup",     "CH", TFT_YELLOW},
+    {0x05, "Cutter",       "CT", TFT_ORANGE},
+    {0x06, "Sinker",       "SI", TFT_PURPLE},
+    {0x07, "Splitter",     "SP", TFT_CYAN},
+    {0x08, "Knuckle",      "KN", TFT_MAGENTA},
+    {0x09, "Screwball",    "SC", TFT_PINK},
+    {0x0A, "Intentional",  "IW", TFT_WHITE},   // Key 0
+    {0x0B, "Pitchout",     "PO", TFT_LIGHTGREY} // Key P
 };
-const int NUM_PITCHES = sizeof(PITCHES) / sizeof(PITCHES[0]);
+#define NUM_PITCHES (sizeof(PITCHES) / sizeof(PitchType))
 
-// RF Protocol packet structure
-struct __attribute__((packed)) SignalPacket {
-    uint8_t  header;      // 0xBB magic byte
-    uint8_t  version;     // Protocol version
-    uint8_t  pitchCode;   // Pitch identifier
-    uint8_t  sequence;    // Deduplication counter
-    uint16_t checksum;    // CRC16-Modbus
-};
+// Key to pitch index mapping (1-9, 0, P)
+const char PITCH_KEYS[] = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'p'};
 
-uint8_t txSequence = 0;
+// ============================================================================
+// PROTOCOL DEFINITIONS
+// ============================================================================
+// Packet structure: [SYNC][VER][CMD][DATA][CRC16]
+#define SYNC_WORD       0xAA
+#define CMD_PITCH       0x01
+#define CMD_ACK         0x81
+#define CMD_CANCEL      0x02
+
+// Packet buffer
+uint8_t txPacket[8];
+uint8_t rxPacket[8];
+
+// ============================================================================
+// STATE VARIABLES
+// ============================================================================
+volatile bool transmitting = false;
+volatile bool ackReceived = false;
+uint32_t lastTxTime = 0;
+uint8_t currentPitch = 0;
+uint8_t txCount = 0;
+
+// Keyboard state
+uint8_t lastKeyCode = 0;
+uint32_t lastKeyTime = 0;
 
 // ============================================================================
 // FUNCTION PROTOTYPES
 // ============================================================================
-
-void safeBoot();
-bool initDisplay();
-bool initRadio();
-bool initKeyboard();
-void drawBootScreen();
+void initHardware();
+void initDisplay();
+void initRadio();
+void initKeyboard();
 void drawMainScreen();
-void drawStatusBar();
-void drawPitchConfirm(const PitchType* pitch, bool success);
-void handleKey(char key);
-bool transmitSignal(const PitchType* pitch);
-uint16_t calcCRC16(uint8_t* data, size_t len);
-void pollKeyboard();
+void drawPitchSent(uint8_t pitchIdx);
+void drawStatus(const char* msg, uint16_t color);
+void readKeyboard();
+void sendPitch(uint8_t pitchIdx);
+bool waitForAck(uint32_t timeout);
+uint16_t calcCRC16(uint8_t* data, uint8_t len);
 
 // ============================================================================
-// BOOT SEQUENCE
+// SETUP
 // ============================================================================
-
 void setup() {
-    // ─────────────────────────────────────────────────────────────────────
-    // PHASE 1: USB SERIAL - CRITICAL FIRST STEP
-    // ─────────────────────────────────────────────────────────────────────
-    Serial.begin(115200);
+    Serial.begin(DEBUG_BAUD);
+    DBGLN("\n\n===========================================");
+    DBGLN("  T-DECK PITCHCOMM - COACH UNIT");
+    DBGF("  Firmware Version: %s\n", FW_VERSION);
+    DBGLN("===========================================\n");
     
-    Serial.println();
-    Serial.println(F("╔════════════════════════════════════════╗"));
-    Serial.println(F("║     T-DECK PITCHCOMM - COACH UNIT      ║"));
-    Serial.println(F("║         Firmware v1.0 Production       ║"));
-    Serial.println(F("╚════════════════════════════════════════╝"));
-    Serial.println();
-    Serial.println(F(">>> 3-SECOND RECOVERY WINDOW <<<"));
-    Serial.println(F("Hold BOOT button now to enter bootloader"));
-    Serial.println();
+    initHardware();
+    initDisplay();
+    initRadio();
+    initKeyboard();
     
-    // Recovery delay - DO NOT REMOVE
-    for (int i = 3; i > 0; i--) {
-        Serial.printf("    %d...\n", i);
-        delay(1000);
-    }
-    Serial.println(F("Proceeding with initialization...\n"));
+    // Initialize watchdog (ESP-IDF v5.x API)
+    esp_task_wdt_config_t wdt_config = {
+        .timeout_ms = WDT_TIMEOUT_SEC * 1000,
+        .idle_core_mask = (1 << 0) | (1 << 1),  // Both cores
+        .trigger_panic = true
+    };
+    esp_task_wdt_init(&wdt_config);
+    esp_task_wdt_add(NULL);  // Add current task
     
-    sys.bootTime = millis();
-    
-    // ─────────────────────────────────────────────────────────────────────
-    // PHASE 2: WATCHDOG TIMER
-    // ─────────────────────────────────────────────────────────────────────
-    Serial.print(F("[WDT ] "));
-    esp_task_wdt_init(WDT_TIMEOUT_SEC, true);
-    esp_task_wdt_add(NULL);
-    Serial.println(F("Watchdog armed (10s timeout)"));
-    
-    // ─────────────────────────────────────────────────────────────────────
-    // PHASE 3: GPIO CONFIGURATION
-    // ─────────────────────────────────────────────────────────────────────
-    Serial.print(F("[GPIO] "));
-    
-    // Power rail enable
-    pinMode(BOARD_POWERON, OUTPUT);
-    digitalWrite(BOARD_POWERON, HIGH);
-    
-    // Display backlight
-    pinMode(TFT_BL, OUTPUT);
-    digitalWrite(TFT_BL, HIGH);
-    
-    // LoRa chip select (deassert)
-    pinMode(LORA_CS, OUTPUT);
-    digitalWrite(LORA_CS, HIGH);
-    
-    // Keyboard interrupt
-    pinMode(KB_INT, INPUT_PULLUP);
-    
-    Serial.println(F("Configured"));
-    
-    // ─────────────────────────────────────────────────────────────────────
-    // PHASE 4: BUS INITIALIZATION
-    // ─────────────────────────────────────────────────────────────────────
-    Serial.print(F("[I2C ] "));
-    Wire.begin(I2C_SDA, I2C_SCL);
-    Wire.setClock(400000);
-    Serial.println(F("400kHz bus ready"));
-    
-    Serial.print(F("[SPI ] "));
-    SPI.begin(SPI_SCK, SPI_MISO, SPI_MOSI);
-    Serial.println(F("Bus ready"));
-    
-    esp_task_wdt_reset();
-    
-    // ─────────────────────────────────────────────────────────────────────
-    // PHASE 5: DISPLAY SUBSYSTEM
-    // ─────────────────────────────────────────────────────────────────────
-    Serial.print(F("[DISP] "));
-    sys.displayOK = initDisplay();
-    if (sys.displayOK) {
-        Serial.println(F("ST7789 320x240 OK"));
-        drawBootScreen();
-    } else {
-        Serial.println(F("FAILED - continuing headless"));
-    }
-    
-    esp_task_wdt_reset();
-    
-    // ─────────────────────────────────────────────────────────────────────
-    // PHASE 6: LORA RADIO SUBSYSTEM
-    // ─────────────────────────────────────────────────────────────────────
-    Serial.print(F("[LORA] "));
-    sys.radioOK = initRadio();
-    if (sys.radioOK) {
-        Serial.printf("SX1262 @ %.1f MHz / +%d dBm\n", LORA_FREQ, LORA_POWER);
-        if (sys.displayOK) {
-            tft.setTextColor(TFT_GREEN, TFT_BLACK);
-            tft.drawString("LoRa: OK (915.0 MHz, +22 dBm)", 20, 120, 2);
-        }
-    } else {
-        Serial.println(F("INIT FAILED - CHECK WIRING"));
-        if (sys.displayOK) {
-            tft.setTextColor(TFT_RED, TFT_BLACK);
-            tft.drawString("LoRa: FAILED", 20, 120, 2);
-        }
-    }
-    
-    esp_task_wdt_reset();
-    
-    // ─────────────────────────────────────────────────────────────────────
-    // PHASE 7: KEYBOARD SUBSYSTEM
-    // ─────────────────────────────────────────────────────────────────────
-    Serial.print(F("[KB  ] "));
-    sys.keyboardOK = initKeyboard();
-    if (sys.keyboardOK) {
-        Serial.printf("Found at 0x%02X\n", KB_I2C_ADDR);
-        if (sys.displayOK) {
-            tft.setTextColor(TFT_GREEN, TFT_BLACK);
-            tft.drawString("Keyboard: OK", 20, 140, 2);
-        }
-    } else {
-        Serial.println(F("Not detected - using Serial input"));
-    }
-    
-    // ─────────────────────────────────────────────────────────────────────
-    // PHASE 8: SYSTEM READY
-    // ─────────────────────────────────────────────────────────────────────
-    sys.systemReady = sys.radioOK;  // Radio is the only critical subsystem
-    
-    Serial.println();
-    Serial.println(F("╔════════════════════════════════════════╗"));
-    Serial.printf("║  Boot complete: %lu ms                  \n", millis() - sys.bootTime);
-    Serial.printf("║  Display:  %s                          \n", sys.displayOK ? "OK" : "FAIL");
-    Serial.printf("║  Radio:    %s                          \n", sys.radioOK ? "OK" : "FAIL");
-    Serial.printf("║  Keyboard: %s                          \n", sys.keyboardOK ? "OK" : "WARN");
-    Serial.printf("║  System:   %s                       \n", sys.systemReady ? "READY" : "DEGRADED");
-    Serial.println(F("╚════════════════════════════════════════╝"));
-    Serial.println();
-    
-    if (sys.systemReady) {
-        Serial.println(F("Pitch keys: 1-9, 0, P"));
-        Serial.println(F("Transmitting on 915 MHz LoRa\n"));
-    }
-    
-    delay(1500);
-    
-    if (sys.displayOK) {
-        drawMainScreen();
-    }
+    drawMainScreen();
+    DBGLN("\n[READY] Coach unit operational");
+    DBGLN("Press 1-9, 0, or P to transmit pitch calls\n");
 }
 
 // ============================================================================
-// MAIN EXECUTION LOOP
+// MAIN LOOP
 // ============================================================================
-
 void loop() {
     esp_task_wdt_reset();
     
-    // Poll keyboard for input
-    pollKeyboard();
+    readKeyboard();
     
-    // Accept serial input as backup
-    if (Serial.available()) {
-        char c = Serial.read();
-        if (c != '\n' && c != '\r') {
-            handleKey(c);
-        }
-    }
-    
-    // Periodic status refresh
-    static uint32_t lastStatus = 0;
-    if (millis() - lastStatus > 5000) {
-        lastStatus = millis();
-        if (sys.displayOK) {
-            drawStatusBar();
+    // Check for incoming ACKs
+    if (radio.available()) {
+        int state = radio.readData(rxPacket, sizeof(rxPacket));
+        if (state == RADIOLIB_ERR_NONE) {
+            // Verify ACK packet
+            if (rxPacket[0] == SYNC_WORD && rxPacket[2] == CMD_ACK) {
+                ackReceived = true;
+                DBGLN("[RX] ACK received from catcher");
+                drawStatus("ACK RECEIVED", TFT_GREEN);
+            }
         }
     }
     
@@ -284,254 +159,289 @@ void loop() {
 // ============================================================================
 // HARDWARE INITIALIZATION
 // ============================================================================
-
-bool initDisplay() {
-    tft.init();
-    tft.setRotation(1);  // Landscape orientation
-    tft.fillScreen(TFT_BLACK);
-    tft.setTextColor(TFT_WHITE, TFT_BLACK);
-    tft.setTextDatum(TL_DATUM);
-    return true;
+void initHardware() {
+    DBGLN("[INIT] Hardware initialization...");
+    
+    // CRITICAL: Enable peripheral power rail
+    // This powers the display, LoRa, keyboard, and other peripherals
+    pinMode(BOARD_POWERON, OUTPUT);
+    digitalWrite(BOARD_POWERON, HIGH);
+    delay(100);  // Allow power to stabilize
+    DBGLN("  - Peripheral power enabled (GPIO10)");
+    
+    // Initialize SPI bus (shared by display, LoRa, SD card)
+    SPI.begin(SPI_SCK, SPI_MISO, SPI_MOSI);
+    DBGLN("  - SPI bus initialized");
+    
+    // Initialize I2C bus (keyboard, touch, sensors)
+    Wire.begin(I2C_SDA, I2C_SCL);
+    Wire.setClock(400000);  // 400kHz I2C
+    DBGLN("  - I2C bus initialized (400kHz)");
 }
 
-bool initRadio() {
-    Serial.println();
-    Serial.println(F("       Configuring SX1262..."));
+// ============================================================================
+// DISPLAY INITIALIZATION
+// ============================================================================
+void initDisplay() {
+    DBGLN("[INIT] Display initialization...");
     
-    int state = radio.begin(
-        LORA_FREQ,
-        LORA_BW,
-        LORA_SF,
-        LORA_CR,
-        RADIOLIB_SX126X_SYNC_WORD_PRIVATE,
-        LORA_POWER,
-        LORA_PREAMBLE
-    );
+    // Initialize backlight
+    pinMode(TFT_BL, OUTPUT);
+    digitalWrite(TFT_BL, HIGH);
+    
+    // Initialize TFT
+    tft.init();
+    tft.setRotation(1);  // Landscape, USB on left
+    tft.fillScreen(TFT_BLACK);
+    tft.setTextColor(TFT_WHITE, TFT_BLACK);
+    tft.setTextSize(2);
+    
+    DBGF("  - ST7789 320x240 initialized (rotation=%d)\n", tft.getRotation());
+}
+
+// ============================================================================
+// RADIO INITIALIZATION
+// ============================================================================
+void initRadio() {
+    DBGLN("[INIT] Radio initialization...");
+    
+    // Initialize SX1262
+    int state = radio.begin(LORA_FREQ, LORA_BW, LORA_SF, LORA_CR, 
+                            RADIOLIB_SX126X_SYNC_WORD_PRIVATE, 
+                            LORA_POWER, LORA_PREAMBLE);
     
     if (state != RADIOLIB_ERR_NONE) {
-        Serial.printf("       begin() failed: %d\n", state);
-        return false;
+        DBGF("  - ERROR: Radio init failed (code %d)\n", state);
+        drawStatus("RADIO INIT FAILED", TFT_RED);
+        while (1) {
+            esp_task_wdt_reset();
+            delay(1000);
+        }
     }
     
-    // RF switch control via DIO2
-    radio.setDio2AsRfSwitch(true);
+    // Configure for low latency
+    radio.setDio1Action(NULL);  // Polling mode
+    radio.setRxBoostedGainMode(true);
     
-    // PA current limit
-    radio.setCurrentLimit(140.0);
+    DBGF("  - SX1262 configured: %.1f MHz, SF%d, BW%.0fkHz\n", 
+         LORA_FREQ, LORA_SF, LORA_BW);
+    DBGF("  - TX Power: +%d dBm\n", LORA_POWER);
     
-    // Hardware CRC
-    radio.setCRC(2);
-    
-    Serial.printf("       Freq: %.1f MHz\n", LORA_FREQ);
-    Serial.printf("       BW:   %.0f kHz\n", LORA_BW);
-    Serial.printf("       SF:   %d\n", LORA_SF);
-    Serial.printf("       PWR:  +%d dBm\n", LORA_POWER);
-    
-    return true;
+    // Start receive mode
+    radio.startReceive();
+    DBGLN("  - Receive mode active");
 }
 
-bool initKeyboard() {
+// ============================================================================
+// KEYBOARD INITIALIZATION
+// ============================================================================
+void initKeyboard() {
+    DBGLN("[INIT] Keyboard initialization...");
+    
+    // Configure keyboard interrupt pin
+    pinMode(KB_INT, INPUT_PULLUP);
+    
+    // Verify keyboard presence on I2C
     Wire.beginTransmission(KB_I2C_ADDR);
-    return (Wire.endTransmission() == 0);
-}
-
-// ============================================================================
-// DISPLAY RENDERING
-// ============================================================================
-
-void drawBootScreen() {
-    tft.fillScreen(TFT_BLACK);
-    
-    tft.setTextColor(TFT_CYAN, TFT_BLACK);
-    tft.setTextDatum(TC_DATUM);
-    tft.drawString("T-DECK PITCHCOMM", 160, 20, 4);
-    
-    tft.setTextColor(TFT_WHITE, TFT_BLACK);
-    tft.drawString("Coach Unit v1.0", 160, 55, 2);
-    
-    tft.setTextDatum(TL_DATUM);
-    tft.setTextColor(TFT_YELLOW, TFT_BLACK);
-    tft.drawString("Initializing...", 20, 100, 2);
-}
-
-void drawMainScreen() {
-    tft.fillScreen(TFT_BLACK);
-    
-    // Header bar
-    tft.fillRect(0, 0, 320, 30, TFT_NAVY);
-    tft.setTextColor(TFT_WHITE, TFT_NAVY);
-    tft.setTextDatum(TC_DATUM);
-    tft.drawString("COACH TRANSMITTER", 160, 6, 2);
-    
-    // Status LED
-    tft.fillCircle(300, 15, 8, sys.systemReady ? TFT_GREEN : TFT_RED);
-    
-    // Pitch key legend
-    tft.setTextDatum(TL_DATUM);
-    tft.setTextColor(TFT_LIGHTGREY, TFT_BLACK);
-    tft.drawString("PITCH KEYS:", 10, 40, 2);
-    
-    int x = 10, y = 60;
-    for (int i = 0; i < NUM_PITCHES - 2; i++) {
-        tft.setTextColor(PITCHES[i].color, TFT_BLACK);
-        char buf[16];
-        snprintf(buf, sizeof(buf), "%c=%s", PITCHES[i].key, PITCHES[i].shortName);
-        tft.drawString(buf, x, y, 2);
-        x += 60;
-        if (x > 280) {
-            x = 10;
-            y += 20;
-        }
-    }
-    
-    // Ready indicator
-    tft.fillRect(0, 180, 320, 60, TFT_DARKGREEN);
-    tft.setTextColor(TFT_WHITE, TFT_DARKGREEN);
-    tft.setTextDatum(MC_DATUM);
-    tft.drawString("READY", 160, 200, 4);
-    tft.setTextDatum(TC_DATUM);
-    tft.drawString("Press key to transmit", 160, 225, 2);
-    
-    drawStatusBar();
-}
-
-void drawStatusBar() {
-    tft.fillRect(0, 230, 320, 10, TFT_BLACK);
-    tft.setTextColor(TFT_DARKGREY, TFT_BLACK);
-    tft.setTextDatum(BL_DATUM);
-    
-    char buf[32];
-    snprintf(buf, sizeof(buf), "TX:%lu ERR:%lu", sys.txCount, sys.txErrors);
-    tft.drawString(buf, 5, 240, 1);
-    
-    uint32_t uptime = (millis() - sys.bootTime) / 1000;
-    snprintf(buf, sizeof(buf), "UP:%lus", uptime);
-    tft.setTextDatum(BR_DATUM);
-    tft.drawString(buf, 315, 240, 1);
-}
-
-void drawPitchConfirm(const PitchType* pitch, bool success) {
-    uint32_t bgColor = success ? pitch->color : TFT_RED;
-    
-    tft.fillRect(0, 180, 320, 60, bgColor);
-    
-    // Contrast text color selection
-    uint32_t textColor = (bgColor == TFT_YELLOW || bgColor == TFT_WHITE ||
-                          bgColor == TFT_GREENYELLOW || bgColor == TFT_CYAN)
-                          ? TFT_BLACK : TFT_WHITE;
-    
-    tft.setTextColor(textColor, bgColor);
-    tft.setTextDatum(MC_DATUM);
-    
-    if (success) {
-        tft.drawString(pitch->name, 160, 195, 4);
-        tft.setTextDatum(TC_DATUM);
-        tft.drawString("SENT", 160, 220, 2);
+    if (Wire.endTransmission() == 0) {
+        DBGF("  - T-Keyboard found at 0x%02X\n", KB_I2C_ADDR);
     } else {
-        tft.drawString("TX FAILED", 160, 200, 4);
-    }
-    
-    delay(500);
-    
-    // Restore ready state
-    tft.fillRect(0, 180, 320, 60, TFT_DARKGREEN);
-    tft.setTextColor(TFT_WHITE, TFT_DARKGREEN);
-    tft.setTextDatum(MC_DATUM);
-    tft.drawString("READY", 160, 200, 4);
-    tft.setTextDatum(TC_DATUM);
-    tft.drawString("Press key to transmit", 160, 225, 2);
-}
-
-// ============================================================================
-// INPUT HANDLING
-// ============================================================================
-
-void pollKeyboard() {
-    if (!sys.keyboardOK) return;
-    
-    Wire.requestFrom(KB_I2C_ADDR, (uint8_t)1);
-    if (Wire.available()) {
-        char key = Wire.read();
-        if (key != 0) {
-            handleKey(key);
-        }
+        DBGLN("  - WARNING: Keyboard not detected!");
     }
 }
 
-void handleKey(char key) {
-    Serial.printf("[KEY ] '%c' (0x%02X)\n", key, key);
-    
-    for (int i = 0; i < NUM_PITCHES; i++) {
-        if (PITCHES[i].key == key) {
-            Serial.printf("[MTCH] %s\n", PITCHES[i].name);
+// ============================================================================
+// READ KEYBOARD
+// ============================================================================
+void readKeyboard() {
+    // Check for key interrupt
+    if (digitalRead(KB_INT) == LOW) {
+        // Read key from ESP32-C3 keyboard controller
+        Wire.requestFrom((uint8_t)KB_I2C_ADDR, (uint8_t)1);
+        if (Wire.available()) {
+            uint8_t keyCode = Wire.read();
             
-            bool success = transmitSignal(&PITCHES[i]);
+            // Debounce
+            if (millis() - lastKeyTime < KB_DEBOUNCE_MS) return;
+            if (keyCode == lastKeyCode) return;
             
-            if (sys.displayOK) {
-                drawPitchConfirm(&PITCHES[i], success);
+            lastKeyCode = keyCode;
+            lastKeyTime = millis();
+            
+            // Convert to ASCII
+            char key = (char)keyCode;
+            DBGF("[KB] Key pressed: 0x%02X ('%c')\n", keyCode, key);
+            
+            // Check if it's a pitch key
+            for (int i = 0; i < NUM_PITCHES; i++) {
+                if (tolower(key) == PITCH_KEYS[i]) {
+                    sendPitch(i);
+                    break;
+                }
             }
-            return;
         }
     }
-    
-    Serial.printf("[WARN] Unknown key: '%c'\n", key);
 }
 
 // ============================================================================
-// RF TRANSMISSION
+// SEND PITCH COMMAND
 // ============================================================================
-
-bool transmitSignal(const PitchType* pitch) {
-    if (!sys.radioOK) {
-        Serial.println(F("[ERR ] Radio unavailable"));
-        sys.txErrors++;
-        return false;
+void sendPitch(uint8_t pitchIdx) {
+    if (pitchIdx >= NUM_PITCHES) return;
+    
+    // Enforce TX cooldown
+    if (millis() - lastTxTime < TX_COOLDOWN_MS) {
+        DBGLN("[TX] Cooldown active, ignoring");
+        return;
     }
     
-    // Construct packet
-    SignalPacket pkt;
-    pkt.header    = 0xBB;
-    pkt.version   = PROTOCOL_VERSION;
-    pkt.pitchCode = pitch->code;
-    pkt.sequence  = txSequence++;
-    pkt.checksum  = calcCRC16((uint8_t*)&pkt, sizeof(pkt) - 2);
+    const PitchType* pitch = &PITCHES[pitchIdx];
+    DBGF("[TX] Sending: %s (%s) - Code 0x%02X\n", 
+         pitch->name, pitch->abbrev, pitch->code);
+    
+    // Build packet
+    txPacket[0] = SYNC_WORD;
+    txPacket[1] = PROTOCOL_VERSION;
+    txPacket[2] = CMD_PITCH;
+    txPacket[3] = pitch->code;
+    
+    // Calculate CRC
+    uint16_t crc = calcCRC16(txPacket, 4);
+    txPacket[4] = crc >> 8;
+    txPacket[5] = crc & 0xFF;
     
     // Transmit
-    uint32_t t0 = micros();
-    int state = radio.transmit((uint8_t*)&pkt, sizeof(pkt));
-    uint32_t txTime = micros() - t0;
+    drawPitchSent(pitchIdx);
     
-    sys.lastTX = millis();
+    int state = radio.transmit(txPacket, 6);
+    lastTxTime = millis();
+    txCount++;
     
     if (state == RADIOLIB_ERR_NONE) {
-        sys.txCount++;
-        sys.lastPitch = pitch->name;
+        DBGLN("  - Transmission successful");
         
-        Serial.println(F("[TX  ] SUCCESS"));
-        Serial.printf("       Pitch: %s (0x%02X)\n", pitch->name, pitch->code);
-        Serial.printf("       Seq:   %d\n", pkt.sequence);
-        Serial.printf("       Time:  %lu µs\n", txTime);
-        Serial.printf("       Total: %lu\n", sys.txCount);
+        // Return to receive mode and wait for ACK
+        radio.startReceive();
         
-        return true;
+        if (waitForAck(500)) {
+            DBGLN("  - ACK confirmed!");
+        } else {
+            DBGLN("  - No ACK received (timeout)");
+            drawStatus("NO ACK", TFT_YELLOW);
+        }
     } else {
-        sys.txErrors++;
-        Serial.printf("[TX  ] FAILED: %d\n", state);
-        return false;
+        DBGF("  - TX failed (code %d)\n", state);
+        drawStatus("TX FAILED", TFT_RED);
+        radio.startReceive();
     }
 }
 
-uint16_t calcCRC16(uint8_t* data, size_t len) {
+// ============================================================================
+// WAIT FOR ACK
+// ============================================================================
+bool waitForAck(uint32_t timeout) {
+    ackReceived = false;
+    uint32_t start = millis();
+    
+    while (millis() - start < timeout) {
+        esp_task_wdt_reset();
+        
+        if (radio.available()) {
+            int state = radio.readData(rxPacket, sizeof(rxPacket));
+            if (state == RADIOLIB_ERR_NONE) {
+                if (rxPacket[0] == SYNC_WORD && rxPacket[2] == CMD_ACK) {
+                    return true;
+                }
+            }
+        }
+        delay(1);
+    }
+    return false;
+}
+
+// ============================================================================
+// CRC-16 CCITT
+// ============================================================================
+uint16_t calcCRC16(uint8_t* data, uint8_t len) {
     uint16_t crc = 0xFFFF;
-    for (size_t i = 0; i < len; i++) {
-        crc ^= data[i];
-        for (int j = 0; j < 8; j++) {
-            crc = (crc & 1) ? ((crc >> 1) ^ 0xA001) : (crc >> 1);
+    for (uint8_t i = 0; i < len; i++) {
+        crc ^= (uint16_t)data[i] << 8;
+        for (uint8_t j = 0; j < 8; j++) {
+            if (crc & 0x8000) {
+                crc = (crc << 1) ^ 0x1021;
+            } else {
+                crc <<= 1;
+            }
         }
     }
     return crc;
 }
 
 // ============================================================================
-// END OF FIRMWARE
+// DISPLAY FUNCTIONS
 // ============================================================================
+void drawMainScreen() {
+    tft.fillScreen(TFT_BLACK);
+    
+    // Header
+    tft.setTextColor(TFT_CYAN, TFT_BLACK);
+    tft.setTextSize(3);
+    tft.setCursor(60, 10);
+    tft.print("PITCHCOMM");
+    
+    // Subheader
+    tft.setTextColor(TFT_WHITE, TFT_BLACK);
+    tft.setTextSize(2);
+    tft.setCursor(90, 45);
+    tft.print("COACH UNIT");
+    
+    // Divider
+    tft.drawFastHLine(10, 70, 300, TFT_DARKGREY);
+    
+    // Status
+    tft.setTextSize(2);
+    tft.setCursor(20, 90);
+    tft.setTextColor(TFT_GREEN, TFT_BLACK);
+    tft.print("READY");
+    
+    // RF Info
+    tft.setTextColor(TFT_LIGHTGREY, TFT_BLACK);
+    tft.setTextSize(1);
+    tft.setCursor(20, 120);
+    tft.printf("RF: %.0f MHz | PWR: +%d dBm", LORA_FREQ, LORA_POWER);
+    tft.setCursor(20, 135);
+    tft.printf("SF%d | BW%.0fkHz | CR4/%d", LORA_SF, LORA_BW, LORA_CR);
+    
+    // Instructions
+    tft.setCursor(20, 200);
+    tft.setTextColor(TFT_DARKGREY, TFT_BLACK);
+    tft.print("Keys: 1-9=Pitches 0=IW P=Pitchout");
+}
+
+void drawPitchSent(uint8_t pitchIdx) {
+    if (pitchIdx >= NUM_PITCHES) return;
+    const PitchType* pitch = &PITCHES[pitchIdx];
+    
+    // Clear pitch area
+    tft.fillRect(10, 150, 300, 45, TFT_BLACK);
+    
+    // Draw pitch name with color
+    tft.setTextSize(3);
+    tft.setTextColor(pitch->color, TFT_BLACK);
+    tft.setCursor(80, 155);
+    tft.print(pitch->name);
+    
+    // Draw "SENT" indicator
+    tft.setTextSize(2);
+    tft.setTextColor(TFT_WHITE, TFT_BLACK);
+    tft.setCursor(20, 160);
+    tft.print("TX:");
+}
+
+void drawStatus(const char* msg, uint16_t color) {
+    tft.fillRect(150, 85, 160, 25, TFT_BLACK);
+    tft.setTextColor(color, TFT_BLACK);
+    tft.setTextSize(2);
+    tft.setCursor(150, 90);
+    tft.print(msg);
+}
