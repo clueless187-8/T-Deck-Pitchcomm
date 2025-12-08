@@ -148,7 +148,7 @@ struct PitchPacket {
     uint8_t checksum;           // XOR checksum
 };
 
-#define PACKET_HEADER   0xPC
+#define PACKET_HEADER   0xBB
 #define PROTOCOL_VER    0x02
 
 // ============================================================================
