@@ -1,0 +1,34 @@
+{
+  "name": "T-Deck-PitchComm",
+  "version": "1.0.0",
+  "description": "Baseball/Softball pitch communication system using LoRa. Real-time wireless pitch signal transmission from coach (T-Deck) to catcher (T-Watch S3) using LoRa radio at 915 MHz. Features touch screen UI for pitch selection, zone grid, pickoff signals, and third sign signals.",
+  "keywords": ["lora", "baseball", "softball", "pitchcomm", "communication", "esp32", "lilygo", "tdeck", "twatch", "radio"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/clueless187-8/T-Deck-Pitchcomm.git"
+  },
+  "authors": [
+    {
+      "name": "clueless187-8",
+      "maintainer": true
+    }
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/clueless187-8/T-Deck-Pitchcomm",
+  "frameworks": ["arduino", "espidf"],
+  "platforms": ["espressif32"],
+  "dependencies": [
+    {
+      "name": "TFT_eSPI",
+      "version": "^2.5.0"
+    },
+    {
+      "name": "RadioLib",
+      "version": "^6.6.0"
+    }
+  ],
+  "examples": [
+    "TDeck_Transmitter/src/main.cpp",
+    "TWatch_Receiver/src/main.cpp"
+  ]
+}
