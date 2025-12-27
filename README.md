@@ -1,8 +1,8 @@
 # T-Deck PitchComm
 
-**Baseball Pitch Communication System using LoRa**
+**Baseball/Softball Pitch Communication System using LoRa**
 
-Real-time wireless pitch signal transmission from coach (T-Deck) to catcher (T-Watch S3) using LoRa radio at 915 MHz.
+Real-time wireless pitch signal transmission from coach (T-Deck) to catcher (T-Watch S3) using LoRa radio at 915 MHz. No more BLE/wifi with subscription fees and limited range. Easily modified GUI for your needs.
 
 ## System Overview
 
