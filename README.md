@@ -119,3 +119,5 @@ MIT License - See [LICENSE](LICENSE) for details.
 - LilyGO for the T-Deck and T-Watch hardware
 - Meshtastic project for T-Watch S3 pin configurations
 - RadioLib for SX1262 LoRa driver
+- Evans Bros. Baseball
+- Bloomfield High School Baseball
