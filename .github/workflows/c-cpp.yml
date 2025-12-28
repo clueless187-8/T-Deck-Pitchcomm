@@ -1,4 +1,4 @@
-name: C/C++ CI
+name: PlatformIO CI
 
 on:
   push:
@@ -8,16 +8,21 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
-    - name: configure
-      run: ./configure
-    - name: make
-      run: make
-    - name: make check
-      run: make check
-    - name: make distcheck
-      run: make distcheck
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+    
+    - name: Install PlatformIO Core
+      run: pip install --upgrade platformio
+    
+    - name: Build TDeck_Transmitter
+      run: pio run -d TDeck_Transmitter
+    
+    - name: Build TWatch_Receiver
+      run: pio run -d TWatch_Receiver
