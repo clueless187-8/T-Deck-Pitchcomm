@@ -21,6 +21,9 @@
 // Display backlight
 #define TFT_BL 45
 
+// Vibration motor (T-Watch S3)
+#define MOTOR_PIN 21
+
 // LoRa SX1262 pins (from Meshtastic t-watch-s3/variant.h)
 #define LORA_MISO  4
 #define LORA_MOSI  1
@@ -50,11 +53,69 @@ typedef struct {
   uint16_t number;    // signal count
 } PitchSignal;
 
-// Pitch names
+// Pitch names and colors (for colored text on black background)
 const char* pitchNames[] = {"FB", "CB", "CH", "SL", "PO"};
 const uint16_t pitchColors[] = {TFT_RED, TFT_YELLOW, TFT_GREEN, TFT_CYAN, TFT_MAGENTA};
 
 bool loraReady = false;
+
+// =============================================================================
+// Vibration Functions
+// =============================================================================
+void vibrateShort() {
+  digitalWrite(MOTOR_PIN, HIGH);
+  delay(50);
+  digitalWrite(MOTOR_PIN, LOW);
+}
+
+void vibrateLong() {
+  digitalWrite(MOTOR_PIN, HIGH);
+  delay(200);
+  digitalWrite(MOTOR_PIN, LOW);
+}
+
+void vibratePattern(int count, int onTime, int offTime) {
+  for (int i = 0; i < count; i++) {
+    digitalWrite(MOTOR_PIN, HIGH);
+    delay(onTime);
+    digitalWrite(MOTOR_PIN, LOW);
+    if (i < count - 1) delay(offTime);
+  }
+}
+
+// Vibrate based on pitch type
+void vibrateForPitch(uint8_t pitch) {
+  switch (pitch) {
+    case 0:  // FB - Fastball: 1 short pulse
+      vibrateShort();
+      break;
+    case 1:  // CB - Curveball: 2 short pulses
+      vibratePattern(2, 50, 100);
+      break;
+    case 2:  // CH - Changeup: 3 short pulses
+      vibratePattern(3, 50, 100);
+      break;
+    case 3:  // SL - Slider: 1 long pulse
+      vibrateLong();
+      break;
+    case 4:  // PO - Pitchout: 2 long pulses
+      vibratePattern(2, 150, 100);
+      break;
+    default:
+      vibrateShort();
+      break;
+  }
+}
+
+void vibrateForPickoff() {
+  // Rapid triple pulse for pickoff
+  vibratePattern(3, 80, 80);
+}
+
+void vibrateForThirdSign() {
+  // Double long pulse for third sign
+  vibratePattern(2, 200, 150);
+}
 PitchSignal lastSignal;
 unsigned long lastReceived = 0;
 
@@ -82,9 +143,11 @@ void drawWaiting() {
 }
 
 void drawSignal(PitchSignal &sig) {
+  // Always use black background
+  tft.fillScreen(TFT_BLACK);
+
   if (sig.type == 1) {
-    // Reset signal
-    tft.fillScreen(TFT_NAVY);
+    // Reset signal - white text
     tft.setTextDatum(MC_DATUM);
     tft.setTextColor(TFT_WHITE);
     tft.setTextSize(3);
@@ -97,83 +160,92 @@ void drawSignal(PitchSignal &sig) {
 
   // Check if this is a pickoff-only signal (no pitch)
   if (sig.pickoff > 0 && !hasPitch) {
-    // Pickoff display - large like pitches
-    tft.fillScreen(TFT_BLUE);
+    // Pickoff display - blue text on black
     tft.setTextDatum(MC_DATUM);
-    tft.setTextColor(TFT_WHITE);
+    tft.setTextColor(TFT_BLUE);
     tft.setTextSize(6);
     tft.drawString("PK" + String(sig.pickoff), 120, 120);
-    
+
     // Signal number (small, top left)
     tft.setTextDatum(TL_DATUM);
     tft.setTextSize(1);
     tft.setTextColor(TFT_DARKGREY);
     tft.drawString("#" + String(sig.number), 5, 5);
+
+    // Vibrate for pickoff
+    vibrateForPickoff();
     return;
   }
 
   // Check if this is a third sign signal
   if (sig.thirdSign > 0 && !hasPitch) {
-    // Third sign display - large like pitches
+    // Third sign display - orange text on black
     const char* thirdNames[] = {"", "3A", "3B", "3C", "3D"};
-    tft.fillScreen(TFT_RED);
     tft.setTextDatum(MC_DATUM);
-    tft.setTextColor(TFT_WHITE);
+    tft.setTextColor(TFT_ORANGE);
     tft.setTextSize(6);
     if (sig.thirdSign <= 4) {
       tft.drawString(thirdNames[sig.thirdSign], 120, 120);
     } else {
       tft.drawString("3?", 120, 120);
     }
-    
+
     // Signal number (small, top left)
     tft.setTextDatum(TL_DATUM);
     tft.setTextSize(1);
     tft.setTextColor(TFT_DARKGREY);
     tft.drawString("#" + String(sig.number), 5, 5);
+
+    // Vibrate for third sign
+    vibrateForThirdSign();
     return;
   }
 
-  // Pitch signal
-  uint16_t bgColor = hasPitch ? pitchColors[sig.pitch] : TFT_WHITE;
-  tft.fillScreen(bgColor);
-  
-  // Pitch name - big and centered
+  // Pitch signal - colored text on black background
+  uint16_t textColor = hasPitch ? pitchColors[sig.pitch] : TFT_WHITE;
+
+  // Pitch name - big and centered with pitch color
   tft.setTextDatum(MC_DATUM);
-  tft.setTextColor(TFT_BLACK);
+  tft.setTextColor(textColor);
   tft.setTextSize(6);
   if (hasPitch) {
     tft.drawString(pitchNames[sig.pitch], 120, 80);
   }
-  
-  // Zone number
+
+  // Zone number - same color as pitch
   if (sig.zone > 0 && sig.zone <= 9) {
     tft.setTextSize(4);
+    tft.setTextColor(textColor);
     tft.drawString(String(sig.zone), 120, 150);
   }
-  
-  // Pickoff indicator (if combined with pitch)
+
+  // Pickoff indicator (if combined with pitch) - blue text
   if (sig.pickoff > 0) {
     tft.setTextSize(2);
     tft.setTextColor(TFT_BLUE);
     tft.drawString("PK" + String(sig.pickoff), 120, 200);
   }
-  
-  // Third sign indicator (if combined with pitch)
+
+  // Third sign indicator (if combined with pitch) - orange text
   if (sig.thirdSign > 0) {
     const char* thirdNames[] = {"", "3A", "3B", "3C", "3D"};
     tft.setTextSize(2);
-    tft.setTextColor(TFT_RED);
+    tft.setTextColor(TFT_ORANGE);
     if (sig.thirdSign <= 4) {
       tft.drawString(thirdNames[sig.thirdSign], 200, 20);
     }
   }
-  
+
   // Signal number (small, top left)
   tft.setTextDatum(TL_DATUM);
   tft.setTextSize(1);
   tft.setTextColor(TFT_DARKGREY);
   tft.drawString("#" + String(sig.number), 5, 5);
+
+  // Vibrate for pitch type
+  if (hasPitch) {
+    vibrateForPitch(sig.pitch);
+  }
 }
 
 // =============================================================================
@@ -248,6 +320,10 @@ void setup() {
   // Backlight
   pinMode(TFT_BL, OUTPUT);
   digitalWrite(TFT_BL, HIGH);
+
+  // Vibration motor
+  pinMode(MOTOR_PIN, OUTPUT);
+  digitalWrite(MOTOR_PIN, LOW);
 
   // Display
   tft.init();
