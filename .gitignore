@@ -9,6 +9,9 @@ build/
 .arduino15/
 *.d
 
+# PlatformIO build artifacts
+.pio/
+
 # IDE files
 .vscode/
 *.code-workspace
