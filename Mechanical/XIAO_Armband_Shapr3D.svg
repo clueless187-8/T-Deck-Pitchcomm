@@ -1,0 +1,235 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 950" font-family="Consolas, monospace">
+  <defs>
+    <marker id="dim" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <path d="M0,1 L8,4 L0,7" fill="#58a6ff" stroke="none"/>
+    </marker>
+    <marker id="dimR" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto-start-reverse">
+      <path d="M0,1 L8,4 L0,7" fill="#58a6ff" stroke="none"/>
+    </marker>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#1a2332" stroke-width="0.4"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="950" fill="#0d1117"/>
+  <rect width="1200" height="950" fill="url(#grid)"/>
+
+  <!-- Title Block -->
+  <rect x="20" y="15" width="1160" height="55" rx="4" fill="#161b22" stroke="#30363d"/>
+  <text x="40" y="42" fill="#58a6ff" font-size="17" font-weight="bold">ARMBAND ePAPER RECEIVER — SHAPR3D ENCLOSURE SPEC</text>
+  <text x="40" y="60" fill="#8b949e" font-size="10">Parametric reference for 3D modeling | Two-piece snap-fit | SLA resin | Rev 1.0</text>
+  <text x="1060" y="42" fill="#8b949e" font-size="10">Sheet 3 of 4</text>
+
+  <!-- ================================================================ -->
+  <!-- BOTTOM TRAY — ISOMETRIC VIEW                                    -->
+  <!-- ================================================================ -->
+  <text x="60" y="105" fill="#58a6ff" font-size="14" font-weight="bold">PART A — BOTTOM TRAY</text>
+
+  <!-- Isometric bottom tray -->
+  <g transform="translate(120,130)">
+    <!-- Bottom face -->
+    <path d="M0,100 L180,40 L420,100 L240,160 Z" fill="#1c2333" stroke="#58a6ff" stroke-width="2"/>
+    <!-- Left wall -->
+    <path d="M0,100 L0,60 L180,0 L180,40 Z" fill="#161b22" stroke="#58a6ff" stroke-width="1.5"/>
+    <!-- Right wall -->
+    <path d="M180,0 L420,60 L420,100 L180,40 Z" fill="#0d1117" stroke="#58a6ff" stroke-width="1.5"/>
+    <!-- Top edge highlight -->
+    <path d="M0,60 L180,0 L420,60 L240,120" fill="none" stroke="#58a6ff" stroke-width="2"/>
+
+    <!-- Internal cavity (shown lighter) -->
+    <path d="M10,96 L185,38 L405,96 L230,154 Z" fill="#0d1117" stroke="#30363d" stroke-width="1"/>
+
+    <!-- PCB retention ribs -->
+    <line x1="200" y1="35" x2="200" y2="95" stroke="#f39c12" stroke-width="1" stroke-dasharray="3,2"/>
+    <line x1="300" y1="55" x2="300" y2="115" stroke="#f39c12" stroke-width="1" stroke-dasharray="3,2"/>
+
+    <!-- Snap tab recesses (4 total) -->
+    <rect x="85" y="68" width="8" height="5" rx="1" fill="#2ecc71" stroke="#2ecc71"/>
+    <rect x="320" y="68" width="8" height="5" rx="1" fill="#2ecc71" stroke="#2ecc71"/>
+    <rect x="135" y="28" width="8" height="5" rx="1" fill="#2ecc71" stroke="#2ecc71"/>
+    <rect x="275" y="28" width="8" height="5" rx="1" fill="#2ecc71" stroke="#2ecc71"/>
+
+    <!-- USB-C port cutout -->
+    <rect x="410" y="73" width="10" height="12" rx="3" fill="#e74c3c" opacity="0.4" stroke="#e74c3c"/>
+
+    <!-- Strap channels -->
+    <rect x="-5" y="70" width="12" height="30" rx="3" fill="none" stroke="#2ecc71" stroke-width="1.5"/>
+    <rect x="413" y="70" width="12" height="30" rx="3" fill="none" stroke="#2ecc71" stroke-width="1.5"/>
+  </g>
+
+  <!-- Bottom tray callouts -->
+  <g font-size="9" fill="#c9d1d9">
+    <text x="60" y="300" fill="#58a6ff" font-weight="bold">Shapr3D Procedure — Bottom Tray:</text>
+    <text x="60" y="318">1. Sketch rectangle 90 × 35 mm, corner radius 4mm</text>
+    <text x="60" y="334">2. Extrude 7.0 mm (this is the tray depth)</text>
+    <text x="60" y="350">3. Shell tool: 1.5mm walls, open top face</text>
+    <text x="60" y="366">4. Gasket groove: offset 1.5mm from inner edge,</text>
+    <text x="60" y="382">   sketch 1.0mm wide channel, extrude cut 0.6mm deep</text>
+    <text x="60" y="398">5. PCB ribs: 2 pairs, 0.5mm proud, 21mm spacing (XIAO width)</text>
+    <text x="60" y="414">6. USB-C cutout: 9.0 × 3.5mm, centered on short end, 2mm from top</text>
+    <text x="60" y="430">7. Strap channels: 6mm wide × 40mm tall loop, both short ends</text>
+    <text x="60" y="446">8. Snap-tab recesses: 4 slots, 2.0 × 4.0mm, centered on long walls</text>
+    <text x="60" y="462">9. Fillet all internal edges 0.5mm</text>
+  </g>
+
+  <!-- ================================================================ -->
+  <!-- TOP LID — ISOMETRIC VIEW                                        -->
+  <!-- ================================================================ -->
+  <text x="600" y="105" fill="#58a6ff" font-size="14" font-weight="bold">PART B — DISPLAY LID</text>
+
+  <g transform="translate(660,130)">
+    <!-- Lid top face -->
+    <path d="M0,100 L180,40 L420,100 L240,160 Z" fill="#1c2333" stroke="#9b59b6" stroke-width="2"/>
+    <!-- Left wall -->
+    <path d="M0,100 L0,88 L180,28 L180,40 Z" fill="#161b22" stroke="#9b59b6" stroke-width="1.5"/>
+    <!-- Right wall -->
+    <path d="M180,28 L420,88 L420,100 L180,40 Z" fill="#0d1117" stroke="#9b59b6" stroke-width="1.5"/>
+
+    <!-- Display window cutout -->
+    <path d="M30,94 L170,44 L350,94 L210,144 Z" fill="#ddd" stroke="#9b59b6" stroke-width="1.5" opacity="0.6"/>
+    <text x="190" y="100" fill="#333" font-size="10" text-anchor="middle" font-family="Arial">DISPLAY WINDOW</text>
+
+    <!-- Polycarbonate overlay -->
+    <text x="190" y="115" fill="#9b59b6" font-size="7" text-anchor="middle">0.5mm polycarbonate</text>
+
+    <!-- Snap tabs (protruding down) -->
+    <rect x="85" y="100" width="8" height="8" rx="1" fill="#2ecc71" stroke="#2ecc71"/>
+    <rect x="320" y="100" width="8" height="8" rx="1" fill="#2ecc71" stroke="#2ecc71"/>
+    <rect x="135" y="52" width="8" height="8" rx="1" fill="#2ecc71" stroke="#2ecc71"/>
+    <rect x="275" y="52" width="8" height="8" rx="1" fill="#2ecc71" stroke="#2ecc71"/>
+  </g>
+
+  <!-- Top lid callouts -->
+  <g font-size="9" fill="#c9d1d9">
+    <text x="600" y="300" fill="#9b59b6" font-weight="bold">Shapr3D Procedure — Display Lid:</text>
+    <text x="600" y="318">1. Sketch rectangle 90 × 35 mm, corner radius 4mm</text>
+    <text x="600" y="334">2. Extrude 3.0 mm</text>
+    <text x="600" y="350">3. Shell tool: 1.5mm walls, open bottom face</text>
+    <text x="600" y="366">4. Display window: 61 × 32mm centered cutout, 0.5mm recess</text>
+    <text x="600" y="382">   for 0.5mm polycarbonate window (adhesive bond)</text>
+    <text x="600" y="398">5. Snap tabs: 4 tabs, 1.0 × 2.0 × 4.0mm, 45° lead-in chamfer</text>
+    <text x="600" y="414">   0.3mm deflection, positioned to match tray recesses</text>
+    <text x="600" y="430">6. Gasket compression ledge: 0.3mm step around perimeter</text>
+    <text x="600" y="446">7. Fillet external edges 0.3mm for comfort against skin</text>
+  </g>
+
+  <!-- ================================================================ -->
+  <!-- CROSS-SECTION DETAIL                                            -->
+  <!-- ================================================================ -->
+  <text x="60" y="500" fill="#58a6ff" font-size="14" font-weight="bold">SECTION X-X — THICKNESS STACK-UP</text>
+
+  <g transform="translate(80,520)">
+    <!-- Section cut box -->
+    <rect x="0" y="0" width="500" height="180" rx="4" fill="#0d1117" stroke="#30363d"/>
+
+    <!-- Layer stack (to scale, 1mm = 14px) -->
+    <!-- Bottom shell wall -->
+    <rect x="40" y="140" width="420" height="21" rx="2" fill="#30363d" stroke="#58a6ff"/>
+    <text x="250" y="155" fill="#58a6ff" font-size="9" text-anchor="middle">BOTTOM SHELL — 1.5mm</text>
+
+    <!-- EVA foam pad -->
+    <rect x="40" y="112" width="420" height="28" rx="1" fill="#1a3a1a" stroke="#2ecc71" stroke-dasharray="3,2"/>
+    <text x="250" y="130" fill="#2ecc71" font-size="9" text-anchor="middle">EVA FOAM — 2.0mm</text>
+
+    <!-- Battery zone (left half) -->
+    <rect x="40" y="28" width="200" height="84" fill="#1c1111" stroke="#e74c3c"/>
+    <text x="140" y="75" fill="#e74c3c" font-size="10" text-anchor="middle">BATTERY</text>
+    <text x="140" y="90" fill="#8b949e" font-size="8" text-anchor="middle">6.0mm</text>
+
+    <!-- XIAO+SX1262 zone (right half) -->
+    <rect x="250" y="44" width="100" height="35" fill="#1c2333" stroke="#f39c12"/>
+    <text x="300" y="60" fill="#f39c12" font-size="8" text-anchor="middle">XIAO</text>
+    <text x="300" y="72" fill="#f39c12" font-size="7" text-anchor="middle">1.2mm</text>
+    <rect x="250" y="79" width="100" height="33" fill="#1c2333" stroke="#e67e22"/>
+    <text x="300" y="95" fill="#e67e22" font-size="8" text-anchor="middle">Wio-SX1262</text>
+    <text x="300" y="106" fill="#e67e22" font-size="7" text-anchor="middle">1.2mm + 1.5mm gap</text>
+
+    <!-- ePaper panel (across full width, on top) -->
+    <rect x="40" y="14" width="350" height="14" fill="#ddd" opacity="0.3" stroke="#9b59b6"/>
+    <text x="215" y="10" fill="#9b59b6" font-size="9" text-anchor="middle">ePAPER PANEL — 1.0mm</text>
+
+    <!-- Top lid -->
+    <rect x="40" y="0" width="420" height="14" rx="2" fill="#30363d" stroke="#9b59b6"/>
+    <text x="250" y="10" fill="#9b59b6" font-size="8" text-anchor="middle">TOP LID — 1.5mm (with display window)</text>
+
+    <!-- Gasket -->
+    <rect x="42" y="138" width="8" height="4" rx="1" fill="#e74c3c"/>
+    <rect x="450" y="138" width="8" height="4" rx="1" fill="#e74c3c"/>
+    <text x="475" y="142" fill="#e74c3c" font-size="7">gasket</text>
+
+    <!-- Total height dimension -->
+    <line x1="480" y1="0" x2="480" y2="161" stroke="#58a6ff" stroke-width="1" marker-start="url(#dimR)" marker-end="url(#dim)"/>
+    <text x="490" y="85" fill="#58a6ff" font-size="12" font-weight="bold">10.0mm</text>
+    <text x="490" y="100" fill="#8b949e" font-size="8">TOTAL</text>
+  </g>
+
+  <!-- Stack-up math -->
+  <g transform="translate(620, 520)">
+    <rect x="0" y="0" width="340" height="180" rx="6" fill="#161b22" stroke="#30363d"/>
+    <text x="170" y="25" fill="#c9d1d9" font-size="12" font-weight="bold" text-anchor="middle">THICKNESS STACK-UP</text>
+    <line x1="10" y1="32" x2="330" y2="32" stroke="#30363d"/>
+
+    <g fill="#c9d1d9" font-size="10">
+      <text x="20" y="52">Top lid (wall):</text>
+      <text x="270" y="52" text-anchor="end">1.5 mm</text>
+
+      <text x="20" y="70">ePaper panel:</text>
+      <text x="270" y="70" text-anchor="end">1.0 mm</text>
+
+      <text x="20" y="88">Air gap / FPC routing:</text>
+      <text x="270" y="88" text-anchor="end">0.5 mm</text>
+
+      <text x="20" y="106">Components (tallest):</text>
+      <text x="270" y="106" text-anchor="end">4.0 mm</text>
+      <text x="290" y="106" fill="#8b949e" font-size="8">*</text>
+
+      <text x="20" y="124">EVA foam pad:</text>
+      <text x="270" y="124" text-anchor="end">1.5 mm</text>
+
+      <text x="20" y="142">Bottom shell (wall):</text>
+      <text x="270" y="142" text-anchor="end">1.5 mm</text>
+    </g>
+
+    <line x1="200" y1="150" x2="280" y2="150" stroke="#58a6ff"/>
+    <text x="20" y="168" fill="#58a6ff" font-size="12" font-weight="bold">TOTAL:</text>
+    <text x="270" y="168" fill="#58a6ff" font-size="12" font-weight="bold" text-anchor="end">10.0 mm</text>
+
+    <text x="20" y="180" fill="#8b949e" font-size="7">* Battery 6mm sits beside, not stacked above MCU</text>
+  </g>
+
+  <!-- ================================================================ -->
+  <!-- PRINT SETTINGS                                                  -->
+  <!-- ================================================================ -->
+  <rect x="60" y="730" width="500" height="190" rx="6" fill="#161b22" stroke="#30363d"/>
+  <text x="310" y="755" fill="#c9d1d9" font-size="13" font-weight="bold" text-anchor="middle">SLA PRINT SETTINGS</text>
+  <line x1="70" y1="762" x2="550" y2="762" stroke="#30363d"/>
+
+  <g fill="#c9d1d9" font-size="10">
+    <text x="80" y="782">Layer height: 0.050mm</text>
+    <text x="80" y="800">Orientation: 30° tilt (minimize support on display window face)</text>
+    <text x="80" y="818">Resin: ABS-like tough (Siraya Tech Tenacious + Blu mix 80/20)</text>
+    <text x="80" y="836">Post-cure: 8 min @ 60°C in UV chamber</text>
+    <text x="80" y="854">Supports: light, 0.3mm contact points, none on mating surfaces</text>
+    <text x="80" y="872">Post-process: wet sand 400→800 grit mating surfaces</text>
+    <text x="80" y="890">Display window: bond 0.5mm polycarbonate with Loctite 4014</text>
+    <text x="80" y="908">Color: matte black (UV-stable pigment)</text>
+  </g>
+
+  <!-- Material alternatives -->
+  <rect x="600" y="730" width="380" height="190" rx="6" fill="#161b22" stroke="#30363d"/>
+  <text x="790" y="755" fill="#c9d1d9" font-size="13" font-weight="bold" text-anchor="middle">MATERIAL ALTERNATIVES</text>
+  <line x1="610" y1="762" x2="970" y2="762" stroke="#30363d"/>
+
+  <g fill="#c9d1d9" font-size="10">
+    <text x="620" y="782" fill="#2ecc71" font-weight="bold">★ SLA Resin (recommended)</text>
+    <text x="620" y="798">Best surface finish, precise snap-fits</text>
+    <text x="620" y="818" fill="#f39c12" font-weight="bold">FDM PETG (budget)</text>
+    <text x="620" y="834">0.12mm layers, needs post-processing</text>
+    <text x="620" y="854" fill="#e74c3c" font-weight="bold">Injection mold (production)</text>
+    <text x="620" y="870">ABS, 10K+ unit runs only</text>
+    <text x="620" y="894" fill="#8b949e">NOTE: Enclosure must be RF-transparent —</text>
+    <text x="620" y="910" fill="#8b949e">NO carbon fiber, NO metallic-filled filament</text>
+  </g>
+
+  <rect x="5" y="5" width="1190" height="940" rx="4" fill="none" stroke="#30363d" stroke-width="2"/>
+</svg>
