@@ -1,0 +1,264 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" font-family="Consolas, monospace">
+  <defs>
+    <marker id="arw" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#58a6ff"/>
+    </marker>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#1a2332" stroke-width="0.4"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="1000" fill="#0d1117"/>
+  <rect width="1200" height="1000" fill="url(#grid)"/>
+
+  <!-- Title Block -->
+  <rect x="20" y="15" width="1160" height="55" rx="4" fill="#161b22" stroke="#30363d"/>
+  <text x="40" y="42" fill="#58a6ff" font-size="17" font-weight="bold">ARMBAND ePAPER RECEIVER — EXPLODED ASSEMBLY</text>
+  <text x="40" y="60" fill="#8b949e" font-size="10">Isometric exploded view | 10 components | Assembly sequence bottom→top | Rev 1.0</text>
+  <text x="1060" y="42" fill="#8b949e" font-size="10">Sheet 4 of 4</text>
+
+  <!-- ================================================================ -->
+  <!-- EXPLODED ASSEMBLY — Center column, bottom to top                -->
+  <!-- ================================================================ -->
+
+  <!-- Vertical guide line -->
+  <line x1="450" y1="110" x2="450" y2="880" stroke="#30363d" stroke-width="1" stroke-dasharray="8,8"/>
+
+  <!-- ① ARMBAND STRAP (bottom-most) -->
+  <g transform="translate(300,830)">
+    <path d="M0,30 L120,0 L300,30 L180,60 Z" fill="#1a3a1a" stroke="#2ecc71" stroke-width="2" opacity="0.7"/>
+    <path d="M60,24 L160,4 L240,24 L140,44 Z" fill="none" stroke="#2ecc71" stroke-width="1" stroke-dasharray="3,2"/>
+    <text x="150" y="36" fill="#2ecc71" font-size="10" text-anchor="middle">ELASTIC + VELCRO</text>
+  </g>
+  <circle cx="250" cy="855" r="12" fill="#0d1117" stroke="#2ecc71" stroke-width="2"/>
+  <text x="250" y="860" fill="#2ecc71" font-size="11" text-anchor="middle" font-weight="bold">①</text>
+  <text x="120" y="855" fill="#2ecc71" font-size="10" text-anchor="end">Armband Strap</text>
+  <text x="120" y="868" fill="#8b949e" font-size="8" text-anchor="end">40mm elastic, velcro closure</text>
+  <text x="120" y="880" fill="#8b949e" font-size="8" text-anchor="end">~5g</text>
+
+  <!-- ② BOTTOM ENCLOSURE TRAY -->
+  <g transform="translate(300,720)">
+    <path d="M0,40 L120,0 L300,40 L180,80 Z" fill="#1c2333" stroke="#58a6ff" stroke-width="2"/>
+    <path d="M0,40 L0,28 L120,-12 L120,0 Z" fill="#161b22" stroke="#58a6ff" stroke-width="1.5"/>
+    <path d="M120,-12 L300,28 L300,40 L120,0 Z" fill="#0d1117" stroke="#58a6ff" stroke-width="1.5"/>
+    <!-- Strap loop indicators -->
+    <rect x="-4" y="30" width="8" height="16" rx="2" fill="none" stroke="#2ecc71"/>
+    <rect x="296" y="30" width="8" height="16" rx="2" fill="none" stroke="#2ecc71"/>
+    <!-- USB-C cutout -->
+    <rect x="290" y="25" width="8" height="10" rx="2" fill="#e74c3c" opacity="0.3"/>
+  </g>
+  <circle cx="250" cy="750" r="12" fill="#0d1117" stroke="#58a6ff" stroke-width="2"/>
+  <text x="250" y="755" fill="#58a6ff" font-size="11" text-anchor="middle" font-weight="bold">②</text>
+  <text x="120" y="740" fill="#58a6ff" font-size="10" text-anchor="end">Bottom Tray</text>
+  <text x="120" y="753" fill="#8b949e" font-size="8" text-anchor="end">SLA resin, 90×35×7mm</text>
+  <text x="120" y="765" fill="#8b949e" font-size="8" text-anchor="end">1.5mm walls, snap-fit recesses</text>
+  <text x="120" y="777" fill="#8b949e" font-size="8" text-anchor="end">~5g</text>
+
+  <!-- ③ EVA FOAM PAD -->
+  <g transform="translate(315,650)">
+    <path d="M0,30 L100,0 L260,30 L160,60 Z" fill="#1a3a1a" opacity="0.5" stroke="#2ecc71" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="130" y="36" fill="#2ecc71" font-size="9" text-anchor="middle">EVA FOAM 2mm</text>
+  </g>
+  <circle cx="250" cy="675" r="12" fill="#0d1117" stroke="#2ecc71" stroke-width="2"/>
+  <text x="250" y="680" fill="#2ecc71" font-size="11" text-anchor="middle" font-weight="bold">③</text>
+  <text x="120" y="670" fill="#2ecc71" font-size="10" text-anchor="end">EVA Foam Pad</text>
+  <text x="120" y="683" fill="#8b949e" font-size="8" text-anchor="end">2mm, comfort + vibration</text>
+
+  <!-- ④ FLEX ANTENNA -->
+  <g transform="translate(310,585)">
+    <path d="M0,20 L90,0 L260,20 L170,40 Z" fill="#1c2333" stroke="#f39c12" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <text x="130" y="24" fill="#f39c12" font-size="9" text-anchor="middle">FLEX ANTENNA 79×10mm</text>
+    <!-- U.FL pigtail -->
+    <path d="M230,15 L280,5" stroke="#f39c12" stroke-width="2"/>
+    <circle cx="280" cy="5" r="4" fill="none" stroke="#f39c12" stroke-width="1.5"/>
+  </g>
+  <circle cx="250" cy="605" r="12" fill="#0d1117" stroke="#f39c12" stroke-width="2"/>
+  <text x="250" y="610" fill="#f39c12" font-size="11" text-anchor="middle" font-weight="bold">④</text>
+  <text x="120" y="598" fill="#f39c12" font-size="10" text-anchor="end">Molex 105262 Antenna</text>
+  <text x="120" y="611" fill="#8b949e" font-size="8" text-anchor="end">915 MHz flex dipole</text>
+  <text x="120" y="623" fill="#8b949e" font-size="8" text-anchor="end">U.FL coax 100mm, ~2g</text>
+
+  <!-- ⑤ 603048 LiPo BATTERY -->
+  <g transform="translate(320,500)">
+    <path d="M0,30 L70,10 L180,30 L110,50 Z" fill="#2a1111" stroke="#e74c3c" stroke-width="2"/>
+    <path d="M0,30 L0,18 L70,-2 L70,10 Z" fill="#1c1111" stroke="#e74c3c" stroke-width="1.5"/>
+    <path d="M70,-2 L180,18 L180,30 L70,10 Z" fill="#0d0808" stroke="#e74c3c" stroke-width="1.5"/>
+    <text x="90" y="30" fill="#e74c3c" font-size="9" text-anchor="middle">603048 LiPo</text>
+    <!-- Battery wires -->
+    <path d="M160,22 L190,16" stroke="#e74c3c" stroke-width="2"/>
+    <path d="M160,28 L190,22" stroke="#333" stroke-width="2"/>
+  </g>
+  <circle cx="250" cy="530" r="12" fill="#0d1117" stroke="#e74c3c" stroke-width="2"/>
+  <text x="250" y="535" fill="#e74c3c" font-size="11" text-anchor="middle" font-weight="bold">⑤</text>
+  <text x="120" y="520" fill="#e74c3c" font-size="10" text-anchor="end">603048 LiPo Battery</text>
+  <text x="120" y="533" fill="#8b949e" font-size="8" text-anchor="end">3.7V 800mAh, 30×48×6mm</text>
+  <text x="120" y="545" fill="#8b949e" font-size="8" text-anchor="end">Solder to BAT+/BAT-, ~15g</text>
+
+  <!-- ⑥ Wio-SX1262 MODULE -->
+  <g transform="translate(360,425)">
+    <path d="M0,25 L55,5 L130,25 L75,45 Z" fill="#1c2333" stroke="#e67e22" stroke-width="2"/>
+    <path d="M0,25 L0,19 L55,-1 L55,5 Z" fill="#161b22" stroke="#e67e22" stroke-width="1.5"/>
+    <path d="M55,-1 L130,19 L130,25 L55,5 Z" fill="#0d1117" stroke="#e67e22" stroke-width="1.5"/>
+    <!-- SX1262 chip -->
+    <rect x="40" y="14" width="20" height="12" rx="1" fill="#e67e22" opacity="0.4"/>
+    <!-- U.FL connector -->
+    <circle cx="25" cy="22" r="4" fill="none" stroke="#f39c12" stroke-width="1"/>
+  </g>
+  <circle cx="250" cy="450" r="12" fill="#0d1117" stroke="#e67e22" stroke-width="2"/>
+  <text x="250" y="455" fill="#e67e22" font-size="11" text-anchor="middle" font-weight="bold">⑥</text>
+  <text x="120" y="440" fill="#e67e22" font-size="10" text-anchor="end">Wio-SX1262 LoRa</text>
+  <text x="120" y="453" fill="#8b949e" font-size="8" text-anchor="end">SX1262 + PE4259 RF switch</text>
+  <text x="120" y="465" fill="#8b949e" font-size="8" text-anchor="end">B2B under XIAO, ~3g</text>
+
+  <!-- ⑦ XIAO nRF52840 -->
+  <g transform="translate(355,345)">
+    <path d="M0,28 L60,5 L140,28 L80,51 Z" fill="#1c2333" stroke="#58a6ff" stroke-width="2"/>
+    <path d="M0,28 L0,22 L60,-1 L60,5 Z" fill="#161b22" stroke="#58a6ff" stroke-width="1.5"/>
+    <path d="M60,-1 L140,22 L140,28 L60,5 Z" fill="#0d1117" stroke="#58a6ff" stroke-width="1.5"/>
+    <!-- nRF52840 chip -->
+    <rect x="45" y="14" width="18" height="12" rx="1" fill="#58a6ff" opacity="0.3"/>
+    <!-- USB-C -->
+    <rect x="118" y="18" width="16" height="8" rx="3" fill="#30363d" stroke="#8b949e"/>
+    <text x="126" y="25" fill="#c9d1d9" font-size="5" text-anchor="middle">USB-C</text>
+  </g>
+  <circle cx="250" cy="370" r="12" fill="#0d1117" stroke="#58a6ff" stroke-width="2"/>
+  <text x="250" y="375" fill="#58a6ff" font-size="11" text-anchor="middle" font-weight="bold">⑦</text>
+  <text x="120" y="360" fill="#58a6ff" font-size="10" text-anchor="end">XIAO nRF52840</text>
+  <text x="120" y="373" fill="#8b949e" font-size="8" text-anchor="end">21×17.8mm, ARM Cortex-M4F</text>
+  <text x="120" y="385" fill="#8b949e" font-size="8" text-anchor="end">All 11 GPIO consumed, ~3g</text>
+
+  <!-- ⑧ 10kΩ RESISTOR (on ePaper RST) -->
+  <g transform="translate(430,310)">
+    <rect x="0" y="0" width="18" height="6" rx="1" fill="#2ecc71" stroke="#2ecc71"/>
+    <line x1="-6" y1="3" x2="0" y2="3" stroke="#2ecc71" stroke-width="1"/>
+    <line x1="18" y1="3" x2="24" y2="3" stroke="#2ecc71" stroke-width="1"/>
+  </g>
+  <text x="462" y="310" fill="#2ecc71" font-size="9">10kΩ</text>
+  <text x="462" y="322" fill="#8b949e" font-size="7">ePaper RST→3V3</text>
+
+  <!-- ⑨ 2.13" ePAPER DISPLAY -->
+  <g transform="translate(300,220)">
+    <path d="M0,45 L130,0 L320,45 L190,90 Z" fill="#ddd" stroke="#9b59b6" stroke-width="2" opacity="0.8"/>
+    <path d="M15,43 L120,5 L290,43 L185,81 Z" fill="#eee" stroke="#999" stroke-width="1"/>
+    <text x="155" y="40" fill="#333" font-size="14" font-weight="bold" text-anchor="middle" font-family="Arial">CURVEBALL</text>
+    <text x="155" y="56" fill="#555" font-size="10" text-anchor="middle" font-family="Arial">122×250 pixels</text>
+    <!-- FPC ribbon -->
+    <path d="M280,40 L310,32 L310,22 L340,14" stroke="#9b59b6" stroke-width="3" fill="none" opacity="0.5"/>
+    <text x="345" y="16" fill="#9b59b6" font-size="7">FPC to SPI</text>
+  </g>
+  <circle cx="250" cy="260" r="12" fill="#0d1117" stroke="#9b59b6" stroke-width="2"/>
+  <text x="250" y="265" fill="#9b59b6" font-size="11" text-anchor="middle" font-weight="bold">⑨</text>
+  <text x="120" y="250" fill="#9b59b6" font-size="10" text-anchor="end">2.13" ePaper Display</text>
+  <text x="120" y="263" fill="#8b949e" font-size="8" text-anchor="end">SSD1680, 122×250 B/W</text>
+  <text x="120" y="275" fill="#8b949e" font-size="8" text-anchor="end">SPI shared bus, ~5g</text>
+
+  <!-- ⑩ SILICONE GASKET -->
+  <g transform="translate(310,165)">
+    <path d="M0,20 L110,0 L280,20 L170,40 Z" fill="none" stroke="#e74c3c" stroke-width="2.5" stroke-dasharray="6,4"/>
+    <text x="140" y="24" fill="#e74c3c" font-size="8" text-anchor="middle">SILICONE GASKET 0.8mm</text>
+  </g>
+  <circle cx="250" cy="185" r="12" fill="#0d1117" stroke="#e74c3c" stroke-width="2"/>
+  <text x="250" y="190" fill="#e74c3c" font-size="11" text-anchor="middle" font-weight="bold">⑩</text>
+
+  <!-- ⑪ TOP LID (DISPLAY WINDOW) -->
+  <g transform="translate(300,90)">
+    <path d="M0,40 L120,0 L300,40 L180,80 Z" fill="#1c2333" stroke="#9b59b6" stroke-width="2"/>
+    <path d="M0,40 L0,34 L120,-6 L120,0 Z" fill="#161b22" stroke="#9b59b6" stroke-width="1.5"/>
+    <path d="M120,-6 L300,34 L300,40 L120,0 Z" fill="#0d1117" stroke="#9b59b6" stroke-width="1.5"/>
+    <!-- Display window -->
+    <path d="M25,38 L115,6 L260,38 L170,70 Z" fill="#ddd" stroke="#9b59b6" stroke-width="1" opacity="0.3"/>
+    <text x="142" y="42" fill="#9b59b6" font-size="8" text-anchor="middle">POLYCARBONATE WINDOW</text>
+    <!-- Snap tabs -->
+    <rect x="70" y="42" width="6" height="8" rx="1" fill="#2ecc71"/>
+    <rect x="230" y="42" width="6" height="8" rx="1" fill="#2ecc71"/>
+  </g>
+  <circle cx="250" cy="125" r="12" fill="#0d1117" stroke="#9b59b6" stroke-width="2"/>
+  <text x="250" y="130" fill="#9b59b6" font-size="11" text-anchor="middle" font-weight="bold">⑪</text>
+  <text x="120" y="118" fill="#9b59b6" font-size="10" text-anchor="end">Display Lid</text>
+  <text x="120" y="131" fill="#8b949e" font-size="8" text-anchor="end">SLA resin, 90×35×3mm</text>
+  <text x="120" y="143" fill="#8b949e" font-size="8" text-anchor="end">0.5mm PC window, snap-fit, ~3g</text>
+
+  <!-- ================================================================ -->
+  <!-- ASSEMBLY SEQUENCE (Right side)                                  -->
+  <!-- ================================================================ -->
+  <rect x="680" y="90" width="480" height="480" rx="6" fill="#161b22" stroke="#30363d"/>
+  <text x="920" y="118" fill="#c9d1d9" font-size="14" font-weight="bold" text-anchor="middle">ASSEMBLY SEQUENCE</text>
+  <line x1="690" y1="128" x2="1150" y2="128" stroke="#30363d"/>
+
+  <g fill="#c9d1d9" font-size="10">
+    <text x="700" y="150" fill="#58a6ff" font-weight="bold">STEP 1 — Conformal coat</text>
+    <text x="700" y="166">Spray MG Chemicals 422B on XIAO+Wio stack.</text>
+    <text x="700" y="180">Mask USB-C port with Kapton tape first.</text>
+
+    <text x="700" y="204" fill="#58a6ff" font-weight="bold">STEP 2 — Solder battery</text>
+    <text x="700" y="220">603048 LiPo: RED→BAT+, BLACK→BAT-</text>
+    <text x="700" y="234">Heat shrink all solder joints.</text>
+
+    <text x="700" y="258" fill="#58a6ff" font-weight="bold">STEP 3 — Connect antenna</text>
+    <text x="700" y="274">U.FL pigtail from Molex 105262 to Wio-SX1262.</text>
+    <text x="700" y="288">Route coax away from battery and USB-C.</text>
+
+    <text x="700" y="312" fill="#58a6ff" font-weight="bold">STEP 4 — Install 10kΩ resistor</text>
+    <text x="700" y="328">Solder 0402 between ePaper RST pad and 3V3.</text>
+    <text x="700" y="342">Or bridge with 10kΩ through-hole on FPC.</text>
+
+    <text x="700" y="366" fill="#58a6ff" font-weight="bold">STEP 5 — Connect ePaper FPC</text>
+    <text x="700" y="382">Route FPC ribbon from display to SPI pads:</text>
+    <text x="700" y="396" fill="#9b59b6">CS→D0 | DC→D6 | BUSY→D7 | SCK→D8 | MOSI→D10</text>
+    <text x="700" y="410" fill="#e74c3c">VCC→3V3 | GND→GND</text>
+
+    <text x="700" y="434" fill="#58a6ff" font-weight="bold">STEP 6 — Load into bottom tray</text>
+    <text x="700" y="450">Seat antenna flat in bottom, adhesive down.</text>
+    <text x="700" y="464">Place EVA foam over antenna.</text>
+    <text x="700" y="478">Seat battery alongside XIAO+Wio stack.</text>
+    <text x="700" y="492">Route USB-C to end port cutout.</text>
+
+    <text x="700" y="516" fill="#58a6ff" font-weight="bold">STEP 7 — Close and seal</text>
+    <text x="700" y="532">Seat ePaper panel face-up in display window recess.</text>
+    <text x="700" y="546">Place gasket in groove. Snap lid closed.</text>
+    <text x="700" y="560">Thread strap through end loops.</text>
+  </g>
+
+  <!-- ================================================================ -->
+  <!-- WEIGHT BUDGET                                                   -->
+  <!-- ================================================================ -->
+  <rect x="680" y="590" width="480" height="290" rx="6" fill="#161b22" stroke="#30363d"/>
+  <text x="920" y="618" fill="#c9d1d9" font-size="14" font-weight="bold" text-anchor="middle">WEIGHT BUDGET</text>
+  <line x1="690" y1="628" x2="1150" y2="628" stroke="#30363d"/>
+
+  <g fill="#c9d1d9" font-size="10">
+    <text x="700" y="650">⑦  XIAO nRF52840</text>
+    <text x="1050" y="650" text-anchor="end">3.0g</text>
+
+    <text x="700" y="670">⑥  Wio-SX1262</text>
+    <text x="1050" y="670" text-anchor="end">3.0g</text>
+
+    <text x="700" y="690">⑨  2.13" ePaper panel</text>
+    <text x="1050" y="690" text-anchor="end">5.0g</text>
+
+    <text x="700" y="710">⑤  603048 LiPo 800mAh</text>
+    <text x="1050" y="710" text-anchor="end">15.0g</text>
+
+    <text x="700" y="730">④  Flex antenna + coax</text>
+    <text x="1050" y="730" text-anchor="end">2.0g</text>
+
+    <text x="700" y="750">②  Bottom tray (SLA)</text>
+    <text x="1050" y="750" text-anchor="end">5.0g</text>
+
+    <text x="700" y="770">⑪  Display lid (SLA)</text>
+    <text x="1050" y="770" text-anchor="end">3.0g</text>
+
+    <text x="700" y="790">①  Armband strap</text>
+    <text x="1050" y="790" text-anchor="end">5.0g</text>
+
+    <text x="700" y="810">③⑩ Foam + gasket + misc</text>
+    <text x="1050" y="810" text-anchor="end">2.0g</text>
+  </g>
+
+  <line x1="700" y1="822" x2="1050" y2="822" stroke="#58a6ff"/>
+  <text x="700" y="845" fill="#58a6ff" font-size="14" font-weight="bold">TOTAL</text>
+  <text x="1050" y="845" fill="#58a6ff" font-size="14" font-weight="bold" text-anchor="end">~43g</text>
+  <text x="700" y="868" fill="#8b949e" font-size="10">Equivalent to a standard fitness tracker</text>
+
+  <rect x="5" y="5" width="1190" height="990" rx="4" fill="none" stroke="#30363d" stroke-width="2"/>
+</svg>
