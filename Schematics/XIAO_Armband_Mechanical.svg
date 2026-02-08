@@ -1,0 +1,307 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 950" font-family="Consolas, monospace">
+  <defs>
+    <marker id="dim" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <path d="M0,1 L8,4 L0,7" fill="#58a6ff" stroke="none"/>
+    </marker>
+    <marker id="dimR" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto-start-reverse">
+      <path d="M0,1 L8,4 L0,7" fill="#58a6ff" stroke="none"/>
+    </marker>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#1a2332" stroke-width="0.4"/>
+    </pattern>
+    <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#30363d" stroke-width="0.6"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="950" fill="#0d1117"/>
+  <rect width="1200" height="950" fill="url(#grid)"/>
+
+  <!-- Title Block -->
+  <rect x="20" y="15" width="1160" height="55" rx="4" fill="#161b22" stroke="#30363d"/>
+  <text x="40" y="42" fill="#58a6ff" font-size="17" font-weight="bold">ARMBAND ePAPER RECEIVER — MECHANICAL ASSEMBLY</text>
+  <text x="40" y="60" fill="#8b949e" font-size="10">Linear enclosure 90 × 35 × 10 mm | 2.13" ePaper top-mount | Rev 1.0 | Feb 2026</text>
+  <text x="1060" y="42" fill="#8b949e" font-size="10">Sheet 2 of 4</text>
+  <text x="1060" y="58" fill="#8b949e" font-size="10">All dims in mm</text>
+
+  <!-- ================================================================ -->
+  <!-- VIEW A — TOP VIEW (plan, looking down at display face)          -->
+  <!-- ================================================================ -->
+  <text x="80" y="105" fill="#58a6ff" font-size="14" font-weight="bold">VIEW A — TOP (Display Face Up)</text>
+
+  <!-- Enclosure outline -->
+  <rect x="80" y="120" width="360" height="140" rx="8" fill="#1c2333" stroke="#58a6ff" stroke-width="2"/>
+
+  <!-- ePaper display window -->
+  <rect x="96" y="130" width="290" height="120" rx="3" fill="#ddd" stroke="#9b59b6" stroke-width="1.5"/>
+  <rect x="100" y="139" width="250" height="100" rx="2" fill="#eee" stroke="#999" stroke-width="1"/>
+  <text x="225" y="185" fill="#333" font-size="22" font-weight="bold" text-anchor="middle" font-family="Arial">FASTBALL</text>
+  <text x="225" y="215" fill="#555" font-size="14" text-anchor="middle" font-family="Arial">INSIDE</text>
+  <text x="100" y="136" fill="#9b59b6" font-size="7">ACTIVE AREA 30.66 × 59.2</text>
+
+  <!-- FPC ribbon zone -->
+  <rect x="386" y="155" width="40" height="60" rx="2" fill="#2a1a33" stroke="#9b59b6" stroke-dasharray="3,2"/>
+  <text x="406" y="190" fill="#9b59b6" font-size="7" text-anchor="middle" transform="rotate(90,406,190)">FPC</text>
+
+  <!-- USB-C port indicator -->
+  <rect x="425" y="175" width="15" height="30" rx="5" fill="none" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="448" y="195" fill="#e74c3c" font-size="8">USB-C</text>
+
+  <!-- Electronics zone (under display, shown dashed) -->
+  <rect x="300" y="132" width="85" height="80" rx="2" fill="none" stroke="#f39c12" stroke-dasharray="4,3" stroke-width="1.2"/>
+  <text x="342" y="150" fill="#f39c12" font-size="7" text-anchor="middle">XIAO+SX1262</text>
+  <text x="342" y="160" fill="#f39c12" font-size="7" text-anchor="middle">(under display)</text>
+
+  <!-- Battery zone -->
+  <rect x="300" y="216" width="85" height="32" rx="2" fill="none" stroke="#e74c3c" stroke-dasharray="4,3" stroke-width="1.2"/>
+  <text x="342" y="236" fill="#e74c3c" font-size="7" text-anchor="middle">BATTERY</text>
+
+  <!-- Antenna slot -->
+  <rect x="90" y="244" width="200" height="8" rx="2" fill="none" stroke="#f39c12" stroke-dasharray="3,2" stroke-width="1"/>
+  <text x="190" y="242" fill="#f39c12" font-size="7" text-anchor="middle">FLEX ANTENNA (under shell)</text>
+
+  <!-- Dimension: length -->
+  <line x1="80" y1="280" x2="440" y2="280" stroke="#58a6ff" stroke-width="1" marker-start="url(#dimR)" marker-end="url(#dim)"/>
+  <text x="260" y="295" fill="#58a6ff" font-size="11" text-anchor="middle" font-weight="bold">90.0</text>
+  <!-- Dimension: width -->
+  <line x1="460" y1="120" x2="460" y2="260" stroke="#58a6ff" stroke-width="1" marker-start="url(#dimR)" marker-end="url(#dim)"/>
+  <text x="475" y="195" fill="#58a6ff" font-size="11" font-weight="bold">35.0</text>
+
+  <!-- ================================================================ -->
+  <!-- VIEW B — SIDE VIEW (long axis, thickness profile)               -->
+  <!-- ================================================================ -->
+  <text x="560" y="105" fill="#58a6ff" font-size="14" font-weight="bold">VIEW B — SIDE (Thickness Profile)</text>
+
+  <!-- Enclosure cross-section -->
+  <rect x="560" y="170" width="360" height="40" rx="5" fill="url(#hatch)" stroke="#58a6ff" stroke-width="2"/>
+  <!-- Bottom shell wall -->
+  <rect x="560" y="200" width="360" height="4" fill="#30363d"/>
+  <!-- Top lid -->
+  <rect x="560" y="170" width="360" height="3" fill="#30363d"/>
+
+  <!-- Internal stack labels -->
+  <rect x="640" y="176" width="80" height="14" rx="2" fill="#f39c12" opacity="0.3" stroke="#f39c12"/>
+  <text x="680" y="186" fill="#f39c12" font-size="7" text-anchor="middle">XIAO+SX1262</text>
+  <text x="680" y="196" fill="#8b949e" font-size="6" text-anchor="middle">4.8mm stack</text>
+
+  <rect x="740" y="176" width="70" height="18" rx="2" fill="#e74c3c" opacity="0.15" stroke="#e74c3c"/>
+  <text x="775" y="188" fill="#e74c3c" font-size="7" text-anchor="middle">BATTERY</text>
+  <text x="775" y="197" fill="#8b949e" font-size="6" text-anchor="middle">3.0mm</text>
+
+  <rect x="570" y="173" width="200" height="6" rx="1" fill="#ddd" opacity="0.3" stroke="#9b59b6"/>
+  <text x="670" y="172" fill="#9b59b6" font-size="7" text-anchor="middle">ePaper panel (1.0mm)</text>
+
+  <!-- Armband strap profile -->
+  <path d="M555,210 C540,215 530,230 530,250 L530,260" stroke="#2ecc71" stroke-width="2" fill="none" stroke-dasharray="4,3"/>
+  <path d="M925,210 C940,215 950,230 950,250 L950,260" stroke="#2ecc71" stroke-width="2" fill="none" stroke-dasharray="4,3"/>
+  <text x="540" y="275" fill="#2ecc71" font-size="8">strap</text>
+  <text x="940" y="275" fill="#2ecc71" font-size="8">strap</text>
+
+  <!-- Dimension: thickness -->
+  <line x1="940" y1="170" x2="940" y2="210" stroke="#58a6ff" stroke-width="1" marker-start="url(#dimR)" marker-end="url(#dim)"/>
+  <text x="958" y="195" fill="#58a6ff" font-size="11" font-weight="bold">10.0</text>
+
+  <!-- Layer callouts -->
+  <g font-size="8" fill="#8b949e">
+    <text x="928" y="174">Top lid 1.5mm</text>
+    <text x="928" y="207">Bottom shell 1.5mm</text>
+  </g>
+
+  <!-- ================================================================ -->
+  <!-- VIEW C — INTERNAL LAYOUT (component placement)                  -->
+  <!-- ================================================================ -->
+  <text x="80" y="335" fill="#58a6ff" font-size="14" font-weight="bold">VIEW C — INTERNAL LAYOUT (Lid Removed, Components Visible)</text>
+
+  <!-- Enclosure outline -->
+  <rect x="80" y="355" width="450" height="175" rx="8" fill="#0d1117" stroke="#58a6ff" stroke-width="2"/>
+
+  <!-- ePaper FPC connector zone (left side) -->
+  <rect x="88" y="365" width="35" height="50" rx="2" fill="#2a1a33" stroke="#9b59b6" stroke-width="1"/>
+  <text x="106" y="395" fill="#9b59b6" font-size="7" text-anchor="middle" transform="rotate(-90,106,395)">ePaper FPC</text>
+
+  <!-- XIAO nRF52840 + Wio-SX1262 (stacked) -->
+  <rect x="130" y="365" width="90" height="75" rx="3" fill="#1c2333" stroke="#f39c12" stroke-width="1.5"/>
+  <text x="175" y="385" fill="#f39c12" font-size="9" text-anchor="middle" font-weight="bold">XIAO</text>
+  <text x="175" y="397" fill="#f39c12" font-size="8" text-anchor="middle">nRF52840</text>
+  <rect x="140" y="415" width="70" height="20" rx="2" fill="#1c2333" stroke="#e67e22" stroke-width="1"/>
+  <text x="175" y="429" fill="#e67e22" font-size="7" text-anchor="middle">Wio-SX1262</text>
+
+  <!-- Battery -->
+  <rect x="130" y="448" width="130" height="72" rx="3" fill="#1c2333" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="195" y="480" fill="#e74c3c" font-size="10" text-anchor="middle" font-weight="bold">603048 LiPo</text>
+  <text x="195" y="494" fill="#c9d1d9" font-size="8" text-anchor="middle">800mAh 3.7V</text>
+  <text x="195" y="506" fill="#8b949e" font-size="8" text-anchor="middle">30 × 48 × 6 mm</text>
+
+  <!-- Flex antenna (along bottom edge, under shell) -->
+  <rect x="280" y="490" width="230" height="30" rx="3" fill="#1c2333" stroke="#f39c12" stroke-width="1" stroke-dasharray="5,3"/>
+  <text x="395" y="508" fill="#f39c12" font-size="9" text-anchor="middle">FLEX ANTENNA 79 × 10 mm</text>
+  <text x="395" y="520" fill="#8b949e" font-size="7" text-anchor="middle">adhesive-mounted inside bottom shell</text>
+
+  <!-- U.FL connector point -->
+  <circle cx="270" cy="420" r="6" fill="none" stroke="#f39c12" stroke-width="1.5"/>
+  <circle cx="270" cy="420" r="2" fill="#f39c12"/>
+  <line x1="276" y1="420" x2="300" y2="490" stroke="#f39c12" stroke-width="1.5"/>
+  <text x="256" y="412" fill="#f39c12" font-size="7">U.FL</text>
+
+  <!-- USB-C port (accessible from right end) -->
+  <rect x="520" y="390" width="10" height="26" rx="3" fill="none" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="520" y="382" fill="#e74c3c" font-size="7">USB-C</text>
+  <text x="520" y="430" fill="#8b949e" font-size="6">charge</text>
+
+  <!-- SPI ribbon cable from XIAO to ePaper FPC -->
+  <path d="M130,390 L123,390" stroke="#3498db" stroke-width="4" opacity="0.4"/>
+  <text x="115" y="370" fill="#3498db" font-size="6" text-anchor="middle">SPI</text>
+
+  <!-- Strap loops -->
+  <rect x="80" y="355" width="8" height="175" rx="4" fill="none" stroke="#2ecc71" stroke-width="1.5"/>
+  <rect x="522" y="355" width="8" height="175" rx="4" fill="none" stroke="#2ecc71" stroke-width="1.5"/>
+  <text x="60" y="445" fill="#2ecc71" font-size="7" text-anchor="middle" transform="rotate(-90,60,445)">STRAP LOOP</text>
+  <text x="548" y="445" fill="#2ecc71" font-size="7" text-anchor="middle" transform="rotate(90,548,445)">STRAP LOOP</text>
+
+  <!-- Internal dimensions -->
+  <line x1="130" y1="345" x2="220" y2="345" stroke="#58a6ff" stroke-width="0.8" marker-start="url(#dimR)" marker-end="url(#dim)"/>
+  <text x="175" y="342" fill="#58a6ff" font-size="8" text-anchor="middle">21.0 (XIAO)</text>
+
+  <line x1="130" y1="535" x2="260" y2="535" stroke="#58a6ff" stroke-width="0.8" marker-start="url(#dimR)" marker-end="url(#dim)"/>
+  <text x="195" y="548" fill="#58a6ff" font-size="8" text-anchor="middle">30.0 (battery)</text>
+
+  <!-- ================================================================ -->
+  <!-- VIEW D — ARMBAND MOUNTING LAYOUT                                -->
+  <!-- ================================================================ -->
+  <text x="560" y="335" fill="#58a6ff" font-size="14" font-weight="bold">VIEW D — ARMBAND MOUNTING</text>
+
+  <!-- Forearm representation -->
+  <ellipse cx="740" cy="470" rx="70" ry="110" fill="none" stroke="#8b949e" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="740" y="590" fill="#8b949e" font-size="9" text-anchor="middle">Forearm cross-section</text>
+
+  <!-- Armband strap wrapped around -->
+  <ellipse cx="740" cy="470" rx="82" ry="122" fill="none" stroke="#2ecc71" stroke-width="2.5"/>
+
+  <!-- Unit on top of forearm -->
+  <rect x="690" y="340" width="100" height="18" rx="4" fill="#1c2333" stroke="#58a6ff" stroke-width="2"/>
+  <rect x="693" y="341" width="94" height="7" rx="2" fill="#ddd" opacity="0.4"/>
+  <text x="740" y="354" fill="#58a6ff" font-size="7" text-anchor="middle">UNIT</text>
+
+  <!-- Display facing up -->
+  <path d="M700,340 L700,320" stroke="#9b59b6" stroke-width="1"/>
+  <text x="700" y="315" fill="#9b59b6" font-size="8" text-anchor="middle">DISPLAY FACES UP</text>
+  <text x="700" y="306" fill="#8b949e" font-size="7" text-anchor="middle">(glance down to read)</text>
+
+  <!-- Velcro/elastic strap detail -->
+  <text x="830" y="395" fill="#2ecc71" font-size="9" font-weight="bold">STRAP OPTIONS:</text>
+  <text x="830" y="410" fill="#c9d1d9" font-size="8">• 40mm elastic + velcro</text>
+  <text x="830" y="423" fill="#c9d1d9" font-size="8">• Neoprene sleeve</text>
+  <text x="830" y="436" fill="#c9d1d9" font-size="8">• Integrated silicone band</text>
+
+  <!-- Antenna orientation -->
+  <path d="M690,358 L650,380 L630,400" stroke="#f39c12" stroke-width="1.5" fill="none" marker-end="url(#dim)"/>
+  <text x="620" y="415" fill="#f39c12" font-size="8" text-anchor="middle">Antenna toward</text>
+  <text x="620" y="426" fill="#f39c12" font-size="8" text-anchor="middle">dugout</text>
+
+  <!-- ================================================================ -->
+  <!-- BOM TABLE                                                       -->
+  <!-- ================================================================ -->
+  <rect x="80" y="570" width="450" height="350" rx="6" fill="#161b22" stroke="#30363d"/>
+  <text x="305" y="595" fill="#c9d1d9" font-size="13" font-weight="bold" text-anchor="middle">BILL OF MATERIALS</text>
+  <line x1="90" y1="602" x2="520" y2="602" stroke="#30363d"/>
+
+  <!-- Header -->
+  <g fill="#58a6ff" font-size="10" font-weight="bold">
+    <text x="95" y="618">#</text>
+    <text x="115" y="618">Component</text>
+    <text x="300" y="618">Spec</text>
+    <text x="460" y="618">Wt.</text>
+  </g>
+  <line x1="90" y1="624" x2="520" y2="624" stroke="#30363d"/>
+
+  <g fill="#c9d1d9" font-size="9">
+    <text x="95" y="640">1</text>
+    <text x="115" y="640">XIAO nRF52840</text>
+    <text x="300" y="640">21×17.8mm MCU</text>
+    <text x="460" y="640">3.0g</text>
+
+    <text x="95" y="658">2</text>
+    <text x="115" y="658">Wio-SX1262</text>
+    <text x="300" y="658">LoRa 915MHz B2B</text>
+    <text x="460" y="658">3.0g</text>
+
+    <text x="95" y="676">3</text>
+    <text x="115" y="676">2.13" ePaper</text>
+    <text x="300" y="676">122×250 SSD1680 SPI</text>
+    <text x="460" y="676">5.0g</text>
+
+    <text x="95" y="694">4</text>
+    <text x="115" y="694">603048 LiPo</text>
+    <text x="300" y="694">3.7V 800mAh 30×48×6mm</text>
+    <text x="460" y="694">15.0g</text>
+
+    <text x="95" y="712">5</text>
+    <text x="115" y="712">Flex Antenna</text>
+    <text x="300" y="712">Molex 105262 915MHz</text>
+    <text x="460" y="712">2.0g</text>
+
+    <text x="95" y="730">6</text>
+    <text x="115" y="730">U.FL Coax</text>
+    <text x="300" y="730">100mm pigtail</text>
+    <text x="460" y="730">1.0g</text>
+
+    <text x="95" y="748">7</text>
+    <text x="115" y="748">Enclosure (2pc)</text>
+    <text x="300" y="748">SLA resin 90×35×10mm</text>
+    <text x="460" y="748">8.0g</text>
+
+    <text x="95" y="766">8</text>
+    <text x="115" y="766">Silicone Gasket</text>
+    <text x="300" y="766">0.8mm O-ring seal</text>
+    <text x="460" y="766">0.5g</text>
+
+    <text x="95" y="784">9</text>
+    <text x="115" y="784">10kΩ Resistor</text>
+    <text x="300" y="784">0402 ePaper RST pull-up</text>
+    <text x="460" y="784">—</text>
+
+    <text x="95" y="802">10</text>
+    <text x="115" y="802">Armband Strap</text>
+    <text x="300" y="802">40mm elastic + velcro</text>
+    <text x="460" y="802">5.0g</text>
+
+    <text x="95" y="820">11</text>
+    <text x="115" y="820">EVA Foam Pad</text>
+    <text x="300" y="820">2mm vibration/comfort</text>
+    <text x="460" y="820">0.5g</text>
+  </g>
+
+  <line x1="90" y1="830" x2="520" y2="830" stroke="#30363d"/>
+  <text x="300" y="850" fill="#58a6ff" font-size="12" font-weight="bold" text-anchor="middle">TOTAL: ~43g</text>
+  <text x="300" y="868" fill="#8b949e" font-size="9" text-anchor="middle">Comparable to a standard sports wristband</text>
+
+  <!-- ================================================================ -->
+  <!-- ENCLOSURE SPECS                                                  -->
+  <!-- ================================================================ -->
+  <rect x="560" y="610" width="420" height="310" rx="6" fill="#161b22" stroke="#30363d"/>
+  <text x="770" y="635" fill="#c9d1d9" font-size="13" font-weight="bold" text-anchor="middle">ENCLOSURE SPECIFICATIONS</text>
+  <line x1="570" y1="642" x2="970" y2="642" stroke="#30363d"/>
+
+  <g fill="#c9d1d9" font-size="10">
+    <text x="580" y="662" fill="#58a6ff" font-weight="bold">External Dimensions</text>
+    <text x="580" y="680">Length: 90.0 mm (3.54")</text>
+    <text x="580" y="696">Width:  35.0 mm (1.38")</text>
+    <text x="580" y="712">Height: 10.0 mm (0.39") total</text>
+
+    <text x="580" y="736" fill="#58a6ff" font-weight="bold">Construction</text>
+    <text x="580" y="754">Material: SLA ABS-like tough resin</text>
+    <text x="580" y="770">Wall thickness: 1.5mm</text>
+    <text x="580" y="786">Two-piece: bottom tray + display lid</text>
+    <text x="580" y="802">Snap-fit closure (4 tabs, 0.3mm deflection)</text>
+    <text x="580" y="818">Gasket groove: 1.0W × 0.6D mm</text>
+    <text x="580" y="834">Corner radius: 4mm external</text>
+
+    <text x="580" y="858" fill="#58a6ff" font-weight="bold">Ports</text>
+    <text x="580" y="876">USB-C: 9.0 × 3.5mm (short end, charging)</text>
+    <text x="580" y="892">Strap loops: 6mm channel, both short ends</text>
+    <text x="580" y="908">Display window: 61 × 32mm polycarbonate</text>
+  </g>
+
+  <!-- Border -->
+  <rect x="5" y="5" width="1190" height="940" rx="4" fill="none" stroke="#30363d" stroke-width="2"/>
+</svg>
