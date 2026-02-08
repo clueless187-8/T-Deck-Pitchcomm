@@ -1,0 +1,281 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" font-family="Consolas, monospace">
+  <defs>
+    <marker id="arwR" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#e74c3c"/></marker>
+    <marker id="arwB" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#3498db"/></marker>
+    <marker id="arwG" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#2ecc71"/></marker>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#1a2332" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="900" fill="#0d1117"/>
+  <rect width="1200" height="900" fill="url(#grid)"/>
+
+  <!-- Title Block -->
+  <rect x="20" y="20" width="1160" height="60" rx="4" fill="#161b22" stroke="#30363d"/>
+  <text x="40" y="52" fill="#58a6ff" font-size="18" font-weight="bold">ARMBAND ePAPER RECEIVER — WIRING SCHEMATIC</text>
+  <text x="40" y="68" fill="#8b949e" font-size="11">XIAO nRF52840 + Wio-SX1262 + 2.13" SSD1680 ePaper | SHARED SPI BUS | Rev 1.0</text>
+  <text x="1050" y="52" fill="#8b949e" font-size="11">915 MHz LoRa</text>
+  <text x="1050" y="68" fill="#8b949e" font-size="11">Feb 2026</text>
+
+  <!-- ============================================================ -->
+  <!-- XIAO nRF52840 MODULE -->
+  <!-- ============================================================ -->
+  <rect x="200" y="160" width="260" height="380" rx="6" fill="#1c2333" stroke="#58a6ff" stroke-width="2"/>
+  <rect x="200" y="160" width="260" height="30" rx="6" fill="#58a6ff"/>
+  <rect x="200" y="184" width="260" height="6" fill="#1c2333"/>
+  <text x="330" y="180" fill="#0d1117" font-size="13" font-weight="bold" text-anchor="middle">SEEED XIAO nRF52840</text>
+  <text x="330" y="208" fill="#8b949e" font-size="10" text-anchor="middle">21 × 17.8 mm | ALL 11 GPIO USED</text>
+
+  <!-- USB-C Port -->
+  <rect x="295" y="500" width="70" height="22" rx="8" fill="#30363d" stroke="#8b949e"/>
+  <text x="330" y="515" fill="#c9d1d9" font-size="9" text-anchor="middle">USB-C</text>
+
+  <!-- Left pins (D0-D5) -->
+  <g fill="#c9d1d9" font-size="11">
+    <circle cx="218" cy="240" r="5" fill="#9b59b6" stroke="#c9d1d9" stroke-width="1"/>
+    <text x="228" y="244">D0 — ePaper CS</text>
+
+    <circle cx="218" cy="270" r="5" fill="#f39c12" stroke="#c9d1d9" stroke-width="1"/>
+    <text x="228" y="274">D1 — DIO1</text>
+
+    <circle cx="218" cy="300" r="5" fill="#f39c12" stroke="#c9d1d9" stroke-width="1"/>
+    <text x="228" y="304">D2 — RESET</text>
+
+    <circle cx="218" cy="330" r="5" fill="#f39c12" stroke="#c9d1d9" stroke-width="1"/>
+    <text x="228" y="334">D3 — BUSY</text>
+
+    <circle cx="218" cy="360" r="5" fill="#f39c12" stroke="#c9d1d9" stroke-width="1"/>
+    <text x="228" y="364">D4 — NSS</text>
+
+    <circle cx="218" cy="390" r="5" fill="#e67e22" stroke="#c9d1d9" stroke-width="1"/>
+    <text x="228" y="394">D5 — RF_SW</text>
+  </g>
+
+  <!-- Right pins (D6-D10) -->
+  <g fill="#c9d1d9" font-size="11">
+    <circle cx="442" cy="240" r="5" fill="#9b59b6" stroke="#c9d1d9" stroke-width="1"/>
+    <text x="338" y="244">D6 — ePaper DC</text>
+
+    <circle cx="442" cy="270" r="5" fill="#9b59b6" stroke="#c9d1d9" stroke-width="1"/>
+    <text x="338" y="274">D7 — ePaper BUSY</text>
+
+    <circle cx="442" cy="300" r="5" fill="#3498db" stroke="#c9d1d9" stroke-width="1"/>
+    <text x="348" y="304">D8 — SCK ★</text>
+
+    <circle cx="442" cy="330" r="5" fill="#3498db" stroke="#c9d1d9" stroke-width="1"/>
+    <text x="348" y="334">D9 — MISO</text>
+
+    <circle cx="442" cy="360" r="5" fill="#3498db" stroke="#c9d1d9" stroke-width="1"/>
+    <text x="338" y="364">D10 — MOSI ★</text>
+  </g>
+
+  <!-- SHARED SPI label -->
+  <rect x="420" y="288" width="12" height="84" rx="2" fill="#3498db" opacity="0.15"/>
+  <text x="500" y="340" fill="#3498db" font-size="9" font-weight="bold">★ SHARED BUS</text>
+
+  <!-- Battery pads -->
+  <circle cx="250" cy="470" r="5" fill="#e74c3c" stroke="#c9d1d9" stroke-width="1"/>
+  <text x="260" y="474" fill="#e74c3c" font-size="11">BAT+</text>
+  <circle cx="380" cy="470" r="5" fill="#2c3e50" stroke="#c9d1d9" stroke-width="1"/>
+  <text x="390" y="474" fill="#8b949e" font-size="11">BAT-</text>
+
+  <!-- 3V3 and GND -->
+  <rect x="205" y="430" width="55" height="18" rx="3" fill="#e74c3c" opacity="0.2" stroke="#e74c3c"/>
+  <text x="232" y="443" fill="#e74c3c" font-size="10" text-anchor="middle">3V3</text>
+  <rect x="400" y="430" width="55" height="18" rx="3" fill="#2c3e50" stroke="#8b949e"/>
+  <text x="427" y="443" fill="#8b949e" font-size="10" text-anchor="middle">GND</text>
+
+  <!-- ============================================================ -->
+  <!-- Wio-SX1262 MODULE (B2B stacked) -->
+  <!-- ============================================================ -->
+  <rect x="200" y="560" width="260" height="160" rx="6" fill="#1c2333" stroke="#f39c12" stroke-width="2"/>
+  <rect x="200" y="560" width="260" height="28" rx="6" fill="#f39c12"/>
+  <rect x="200" y="582" width="260" height="6" fill="#1c2333"/>
+  <text x="330" y="578" fill="#0d1117" font-size="13" font-weight="bold" text-anchor="middle">Wio-SX1262 LoRa</text>
+  <text x="330" y="604" fill="#8b949e" font-size="10" text-anchor="middle">SX1262 + PE4259 | 915 MHz</text>
+
+  <!-- B2B connector -->
+  <text x="330" y="548" fill="#8b949e" font-size="9" text-anchor="middle">B2B CONNECTOR (STACKED)</text>
+  <line x1="260" y1="540" x2="260" y2="560" stroke="#f39c12" stroke-width="2" stroke-dasharray="4,3"/>
+  <line x1="400" y1="540" x2="400" y2="560" stroke="#3498db" stroke-width="2" stroke-dasharray="4,3"/>
+
+  <!-- Internal connections -->
+  <g fill="#c9d1d9" font-size="10">
+    <text x="215" y="630">NSS ← D4</text>
+    <text x="215" y="650">DIO1 ← D1</text>
+    <text x="215" y="670">RST ← D2</text>
+    <text x="215" y="690">BUSY ← D3</text>
+    <text x="340" y="630">SCK ← D8 (shared)</text>
+    <text x="340" y="650">MISO → D9</text>
+    <text x="340" y="670">MOSI ← D10 (shared)</text>
+    <text x="340" y="690">RF_SW ← D5</text>
+  </g>
+
+  <!-- U.FL connector -->
+  <circle cx="330" cy="740" r="12" fill="none" stroke="#f39c12" stroke-width="2"/>
+  <circle cx="330" cy="740" r="4" fill="#f39c12"/>
+  <text x="330" y="766" fill="#f39c12" font-size="10" text-anchor="middle">U.FL / IPEX</text>
+
+  <!-- Antenna -->
+  <rect x="460" y="720" width="200" height="60" rx="6" fill="#1c2333" stroke="#f39c12" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="560" y="745" fill="#f39c12" font-size="12" font-weight="bold" text-anchor="middle">FLEX ANTENNA</text>
+  <text x="560" y="762" fill="#8b949e" font-size="9" text-anchor="middle">915 MHz | Molex 105262-0002</text>
+  <path d="M342,740 L460,740" stroke="#f39c12" stroke-width="3" fill="none"/>
+  <text x="400" y="732" fill="#f39c12" font-size="8">coax 150mm</text>
+
+  <!-- ============================================================ -->
+  <!-- 2.13" ePAPER DISPLAY -->
+  <!-- ============================================================ -->
+  <rect x="680" y="160" width="340" height="280" rx="6" fill="#1c2333" stroke="#9b59b6" stroke-width="2"/>
+  <rect x="680" y="160" width="340" height="28" rx="6" fill="#9b59b6"/>
+  <rect x="680" y="182" width="340" height="6" fill="#1c2333"/>
+  <text x="850" y="178" fill="#0d1117" font-size="13" font-weight="bold" text-anchor="middle">2.13" ePAPER DISPLAY</text>
+  <text x="850" y="204" fill="#8b949e" font-size="10" text-anchor="middle">122×250 px | SSD1680 driver | SPI interface</text>
+  <text x="850" y="218" fill="#8b949e" font-size="10" text-anchor="middle">Seeed SKU 104990845 | $6.50</text>
+
+  <!-- Display area representation -->
+  <rect x="720" y="230" width="250" height="122" rx="3" fill="#eee" stroke="#9b59b6" stroke-width="1.5"/>
+  <text x="845" y="280" fill="#111" font-size="28" font-weight="bold" text-anchor="middle" font-family="Arial, sans-serif">CURVE</text>
+  <text x="845" y="314" fill="#111" font-size="16" text-anchor="middle" font-family="Arial, sans-serif">BALL</text>
+  <text x="950" y="346" fill="#555" font-size="8">-62dBm</text>
+  <rect x="722" y="232" width="246" height="118" rx="2" fill="none" stroke="#333" stroke-width="1"/>
+
+  <!-- Display pins -->
+  <g font-size="11">
+    <circle cx="710" cy="380" r="5" fill="#e74c3c" stroke="#c9d1d9" stroke-width="1"/>
+    <text x="720" y="384" fill="#e74c3c">VCC (3.3V)</text>
+
+    <circle cx="710" cy="402" r="5" fill="#2c3e50" stroke="#8b949e" stroke-width="1"/>
+    <text x="720" y="406" fill="#8b949e">GND</text>
+
+    <circle cx="710" cy="424" r="5" fill="#3498db" stroke="#c9d1d9" stroke-width="1"/>
+    <text x="720" y="428" fill="#3498db">SCK (shared D8)</text>
+
+    <circle cx="910" cy="380" r="5" fill="#3498db" stroke="#c9d1d9" stroke-width="1"/>
+    <text x="920" y="384" fill="#3498db">MOSI (shared D10)</text>
+
+    <circle cx="910" cy="402" r="5" fill="#9b59b6" stroke="#c9d1d9" stroke-width="1"/>
+    <text x="920" y="406" fill="#9b59b6">CS → D0</text>
+
+    <circle cx="910" cy="424" r="5" fill="#9b59b6" stroke="#c9d1d9" stroke-width="1"/>
+    <text x="920" y="428" fill="#9b59b6">DC → D6</text>
+  </g>
+
+  <!-- ePaper BUSY and RST -->
+  <circle cx="800" cy="380" r="5" fill="#9b59b6" stroke="#c9d1d9" stroke-width="1"/>
+  <text x="810" y="384" fill="#9b59b6" font-size="11">BUSY → D7</text>
+
+  <circle cx="800" cy="402" r="5" fill="#2ecc71" stroke="#c9d1d9" stroke-width="1"/>
+  <text x="810" y="406" fill="#2ecc71" font-size="11">RST → 3V3 (10kΩ)</text>
+
+  <!-- RST pull-up resistor detail -->
+  <rect x="780" y="410" width="100" height="28" rx="3" fill="#0d1117" stroke="#2ecc71" stroke-dasharray="3,2"/>
+  <text x="830" y="424" fill="#2ecc71" font-size="8" text-anchor="middle">10kΩ pull-up to 3V3</text>
+  <text x="830" y="434" fill="#8b949e" font-size="7" text-anchor="middle">NO GPIO — hardware reset</text>
+
+  <!-- ============================================================ -->
+  <!-- SPI WIRES from XIAO to ePaper (SHARED BUS) -->
+  <!-- ============================================================ -->
+  <!-- SCK -->
+  <path d="M448,300 C550,300 620,340 700,380" stroke="#3498db" stroke-width="2.5" fill="none"/>
+  <!-- MOSI -->
+  <path d="M448,360 C560,360 640,370 700,424" stroke="#3498db" stroke-width="2.5" fill="none" stroke-dasharray="8,4"/>
+  <!-- CS (D0) -->
+  <path d="M212,240 C160,240 160,402 680,402 C700,402 890,402 905,402" stroke="#9b59b6" stroke-width="2" fill="none"/>
+  <!-- DC (D6) -->
+  <path d="M448,240 C550,240 680,300 850,424" stroke="#9b59b6" stroke-width="2" fill="none" stroke-dasharray="6,3"/>
+  <!-- BUSY (D7) -->
+  <path d="M448,270 C560,270 700,340 795,380" stroke="#9b59b6" stroke-width="1.5" fill="none" stroke-dasharray="4,4"/>
+
+  <!-- Shared SPI bus highlight -->
+  <rect x="520" y="292" width="130" height="50" rx="4" fill="#0d1117" stroke="#3498db" stroke-dasharray="4,2"/>
+  <text x="585" y="310" fill="#3498db" font-size="10" font-weight="bold" text-anchor="middle">SHARED SPI</text>
+  <text x="585" y="324" fill="#8b949e" font-size="8" text-anchor="middle">SCK (D8) + MOSI (D10)</text>
+  <text x="585" y="336" fill="#8b949e" font-size="8" text-anchor="middle">CS arbitration in firmware</text>
+
+  <!-- ============================================================ -->
+  <!-- BATTERY -->
+  <!-- ============================================================ -->
+  <rect x="40" y="430" width="140" height="90" rx="6" fill="#1c2333" stroke="#e74c3c" stroke-width="2"/>
+  <text x="110" y="456" fill="#e74c3c" font-size="12" font-weight="bold" text-anchor="middle">603048 LiPo</text>
+  <text x="110" y="472" fill="#c9d1d9" font-size="10" text-anchor="middle">3.7V 800mAh</text>
+  <text x="110" y="488" fill="#8b949e" font-size="10" text-anchor="middle">6 × 30 × 48 mm</text>
+  <text x="110" y="504" fill="#8b949e" font-size="10" text-anchor="middle">~15g | 40+ hr runtime</text>
+
+  <!-- Battery wires -->
+  <line x1="180" y1="452" x2="245" y2="470" stroke="#e74c3c" stroke-width="2.5" marker-end="url(#arwR)"/>
+  <text x="198" y="448" fill="#e74c3c" font-size="9">RED (+)</text>
+  <line x1="180" y1="490" x2="375" y2="470" stroke="#8b949e" stroke-width="2"/>
+  <text x="260" y="498" fill="#8b949e" font-size="9">BLACK (-)</text>
+
+  <!-- ============================================================ -->
+  <!-- WIRE COLOR LEGEND -->
+  <!-- ============================================================ -->
+  <rect x="700" y="480" width="280" height="200" rx="6" fill="#161b22" stroke="#30363d"/>
+  <text x="840" y="504" fill="#c9d1d9" font-size="12" font-weight="bold" text-anchor="middle">WIRE COLOR CODE</text>
+  <line x1="710" y1="512" x2="970" y2="512" stroke="#30363d"/>
+
+  <g font-size="11">
+    <rect x="720" y="524" width="30" height="12" rx="2" fill="#e74c3c"/>
+    <text x="760" y="535" fill="#c9d1d9">RED — VCC / 3.3V / BAT+</text>
+
+    <rect x="720" y="546" width="30" height="12" rx="2" fill="#2c3e50" stroke="#8b949e"/>
+    <text x="760" y="557" fill="#c9d1d9">BLACK — GND / BAT-</text>
+
+    <rect x="720" y="568" width="30" height="12" rx="2" fill="#3498db"/>
+    <text x="760" y="579" fill="#c9d1d9">BLUE — SPI shared (SCK/MOSI)</text>
+
+    <rect x="720" y="590" width="30" height="12" rx="2" fill="#9b59b6"/>
+    <text x="760" y="601" fill="#c9d1d9">PURPLE — ePaper ctrl (CS/DC/BUSY)</text>
+
+    <rect x="720" y="612" width="30" height="12" rx="2" fill="#f39c12"/>
+    <text x="760" y="623" fill="#c9d1d9">ORANGE — LoRa ctrl (NSS/DIO/RST)</text>
+
+    <rect x="720" y="634" width="30" height="12" rx="2" fill="#e67e22"/>
+    <text x="760" y="645" fill="#c9d1d9">AMBER — RF_SW (PE4259)</text>
+
+    <rect x="720" y="656" width="30" height="12" rx="2" fill="#2ecc71"/>
+    <text x="760" y="667" fill="#c9d1d9">GREEN — ePaper RST (10kΩ to 3V3)</text>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- CRITICAL NOTES -->
+  <!-- ============================================================ -->
+  <rect x="700" y="700" width="480" height="120" rx="6" fill="#161b22" stroke="#30363d"/>
+  <text x="720" y="722" fill="#58a6ff" font-size="12" font-weight="bold">CRITICAL NOTES</text>
+  <g fill="#c9d1d9" font-size="10">
+    <text x="720" y="740">1. SHARED SPI BUS — CS arbitration mandatory in firmware</text>
+    <text x="720" y="756">2. RF_SW (D5) MUST be HIGH — enables PE4259 RF path</text>
+    <text x="720" y="772">3. radio.setDio2AsRfSwitch(true) — MANDATORY</text>
+    <text x="720" y="788">4. ePaper RST tied to 3V3 via 10kΩ — saves 1 GPIO</text>
+    <text x="720" y="804">5. ALL 11 GPIO CONSUMED — zero expansion headroom</text>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- PIN SUMMARY -->
+  <!-- ============================================================ -->
+  <rect x="20" y="560" width="160" height="280" rx="6" fill="#161b22" stroke="#30363d"/>
+  <text x="100" y="582" fill="#58a6ff" font-size="11" font-weight="bold" text-anchor="middle">PIN SUMMARY</text>
+  <line x1="30" y1="590" x2="170" y2="590" stroke="#30363d"/>
+  <g fill="#c9d1d9" font-size="10">
+    <text x="35" y="608" fill="#9b59b6">D0  ePaper CS</text>
+    <text x="35" y="624" fill="#f39c12">D1  DIO1 (IRQ)</text>
+    <text x="35" y="640" fill="#f39c12">D2  LoRa RESET</text>
+    <text x="35" y="656" fill="#f39c12">D3  LoRa BUSY</text>
+    <text x="35" y="672" fill="#f39c12">D4  LoRa NSS</text>
+    <text x="35" y="688" fill="#e67e22">D5  RF_SW</text>
+    <text x="35" y="704" fill="#9b59b6">D6  ePaper DC</text>
+    <text x="35" y="720" fill="#9b59b6">D7  ePaper BUSY</text>
+    <text x="35" y="736" fill="#3498db">D8  SPI SCK ★</text>
+    <text x="35" y="752" fill="#3498db">D9  SPI MISO</text>
+    <text x="35" y="768" fill="#3498db">D10 SPI MOSI ★</text>
+    <line x1="30" y1="778" x2="170" y2="778" stroke="#30363d"/>
+    <text x="35" y="796" fill="#e74c3c">BAT+ → LiPo RED</text>
+    <text x="35" y="812" fill="#8b949e">BAT- → LiPo BLK</text>
+    <line x1="30" y1="822" x2="170" y2="822" stroke="#30363d"/>
+    <text x="35" y="836" fill="#58a6ff" font-size="9">★ = shared by both</text>
+  </g>
+
+  <rect x="5" y="5" width="1190" height="890" rx="4" fill="none" stroke="#30363d" stroke-width="2"/>
+</svg>
