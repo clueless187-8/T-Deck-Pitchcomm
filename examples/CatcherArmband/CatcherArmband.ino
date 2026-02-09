@@ -388,8 +388,8 @@ bool initLoRa() {
     // DIO2 as RF switch control — CRITICAL for Wio-SX1262
     radio.setDio2AsRfSwitch(true);
     
-    // Enable CRC
-    radio.setCRC(true);
+    // Enable CRC (2-byte for compatibility with all receivers)
+    radio.setCRC(2);
     
     // Set interrupt on DIO1
     radio.setPacketReceivedAction(rxISR);

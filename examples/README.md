@@ -36,8 +36,8 @@ These examples require the following Arduino libraries:
 
 ## Hardware Requirements
 
-- ESP32-based board (configured for esp32:esp32:esp32)
-- LoRa radio module (SX1262)
+- Seeed XIAO nRF52840 board (nRF52840-based, configured for Arduino IDE as esp32:esp32:esp32 for CI compatibility)
+- LoRa radio module (SX1262 via Wio-SX1262 module)
 - Compatible display (OLED or ePaper depending on example)
 
 For more information, see the main project repository.
