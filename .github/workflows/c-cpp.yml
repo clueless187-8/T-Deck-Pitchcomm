@@ -18,7 +18,7 @@ jobs:
             board-fqbn: Seeeduino:nrf52:xiaonRF52840Sense
             board-platform-name: Seeeduino:nrf52
             board-platform-url: https://files.seeedstudio.com/arduino/package_seeeduino_boards_index.json
-          - sketch: XIAO_Armband_ePaper/Catcher_Armband_ePaper_v1.ino
+          - sketch: XIAO_Armband_ePaper/XIAO_Armband_ePaper.ino
             board-fqbn: Seeeduino:nrf52:xiaonRF52840Sense
             board-platform-name: Seeeduino:nrf52
             board-platform-url: https://files.seeedstudio.com/arduino/package_seeeduino_boards_index.json
