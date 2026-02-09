@@ -129,7 +129,7 @@
 
     <!-- EVA foam pad -->
     <rect x="40" y="112" width="420" height="28" rx="1" fill="#1a3a1a" stroke="#2ecc71" stroke-dasharray="3,2"/>
-    <text x="250" y="130" fill="#2ecc71" font-size="9" text-anchor="middle">EVA FOAM — 2.0mm</text>
+    <text x="250" y="130" fill="#2ecc71" font-size="9" text-anchor="middle">EVA FOAM — 1.5mm</text>
 
     <!-- Battery zone (left half) -->
     <rect x="40" y="28" width="200" height="84" fill="#1c1111" stroke="#e74c3c"/>

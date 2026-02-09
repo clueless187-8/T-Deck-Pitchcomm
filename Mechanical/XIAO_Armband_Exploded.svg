@@ -57,12 +57,12 @@
   <!-- ③ EVA FOAM PAD -->
   <g transform="translate(315,650)">
     <path d="M0,30 L100,0 L260,30 L160,60 Z" fill="#1a3a1a" opacity="0.5" stroke="#2ecc71" stroke-width="1.5" stroke-dasharray="4,3"/>
-    <text x="130" y="36" fill="#2ecc71" font-size="9" text-anchor="middle">EVA FOAM 2mm</text>
+    <text x="130" y="36" fill="#2ecc71" font-size="9" text-anchor="middle">EVA FOAM 1.5mm</text>
   </g>
   <circle cx="250" cy="675" r="12" fill="#0d1117" stroke="#2ecc71" stroke-width="2"/>
   <text x="250" y="680" fill="#2ecc71" font-size="11" text-anchor="middle" font-weight="bold">③</text>
   <text x="120" y="670" fill="#2ecc71" font-size="10" text-anchor="end">EVA Foam Pad</text>
-  <text x="120" y="683" fill="#8b949e" font-size="8" text-anchor="end">2mm, comfort + vibration</text>
+  <text x="120" y="683" fill="#8b949e" font-size="8" text-anchor="end">1.5mm, comfort + vibration</text>
 
   <!-- ④ FLEX ANTENNA -->
   <g transform="translate(310,585)">
